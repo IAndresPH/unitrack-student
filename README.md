@@ -1,5 +1,3 @@
----
-
 ## Proyecto: UniTrack - Management API
 
 ### Descripción
