@@ -2,30 +2,42 @@
 
 ### Descripción
 
-**UniTrack** es una API REST desarrollada en Java con Spring Boot que permite gestionar estudiantes y sus asignaturas en una universidad. Está diseñada con **arquitectura hexagonal (puertos y adaptadores)** combinada con los principios de **Clean Architecture**, para garantizar bajo acoplamiento, alta cohesión y facilidad de mantenimiento.
+**UniTrack** es una API REST desarrollada en Java con Spring Boot que permite gestionar actividades en una universidad. Está diseñada siguiendo la **arquitectura hexagonal (puertos y adaptadores)** combinada con los principios de **Clean Architecture**, para garantizar bajo acoplamiento, alta cohesión y facilidad de mantenimiento.
 
 ---
 
-### Arquitectura General
+### Tecnologías
 
-El proyecto está dividido en capas bien definidas. A continuación, una tabla que resume los principales elementos y sus responsabilidades:
+* Java 21
+* Spring Boot 3
+* Maven
+* MySQL
+* JPA (Jakarta Persistence)
+* MapStruct
 
-| Elemento                            | Ubicación                            | Rol                                                      |
-| ----------------------------------- | ------------------------------------ | -------------------------------------------------------- |
-| `Student`, `Subject`                | `domain.model`                       | Representan el negocio puro, sin dependencias.           |
-| `StudentEntity`                     | `infrastructure.persistence.entity`  | Representa las tablas de la base de datos (JPA).         |
-| `StudentResponse`, `StudentRequest` | `application.dto.response/request`   | DTOs que intercambian datos con el cliente.              |
-| `StudentService`                    | `application.service`                | Contiene los casos de uso (reglas del negocio).          |
-| `IStudentPersistencePort`           | `application.port.out`               | Define lo que el dominio necesita de la infraestructura. |
-| `StudentPersistenceAdapter`         | `infrastructure.persistence.adapter` | Implementa los puertos usando la base de datos.          |
-| `StudentEntityMapper`               | `infrastructure.persistence.mapper`  | Convierte entre `Student` y `StudentEntity`.             |
-| `IStudentMapper`                    | `application.mapper`                 | Convierte entre `Student` y sus DTOs.                    |
+---
+
+### Arquitectura por Paquetes
+
+| Paquete                                 | Rol o responsabilidad principal                                                              |
+| --------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `domain.model`                          | Contiene los modelos del dominio (entidades puras del negocio) sin dependencias externas.    |
+| `application.dto.request/response`      | Define los objetos que intercambian datos con el exterior (cliente).                         |
+| `application.service`                   | Implementa los casos de uso del negocio (lógica de aplicación).                              |
+| `application.mapper`                    | Transforma entre entidades del dominio y los DTOs.                                           |
+| `application.port.in`                   | Define las interfaces de entrada que los controladores usan para activar casos de uso.       |
+| `application.port.out`                  | Define lo que el dominio necesita de la infraestructura (por ejemplo, acceder a la BD).      |
+| `infrastructure.persistence.entity`     | Contiene las entidades JPA que representan las tablas de la base de datos.                   |
+| `infrastructure.persistence.repository` | Interfaces de acceso a datos (repositorios JPA estándar).                                    |
+| `infrastructure.persistence.mapper`     | Mappers que convierten entre entidades JPA y modelos del dominio.                            |
+| `infrastructure.adapter`                | Adaptadores concretos que implementan los puertos de salida (`port.out`) accediendo a datos. |
+| `web.controller`                        | Define los endpoints expuestos al cliente (capa HTTP).                                       |
 
 ---
 
 ### Estructura del Proyecto
 
-```
+```bash
 src/
 ├── application/
 │   ├── dto/
@@ -33,6 +45,7 @@ src/
 │   │   └── response/
 │   ├── mapper/
 │   ├── port/
+│   │   ├── in/
 │   │   └── out/
 │   └── service/
 ├── domain/
@@ -49,35 +62,26 @@ src/
 
 ---
 
-### Tecnologías
-
-* Java 21
-* Spring Boot 3
-* Maven
-* MapStruct
-* MySQL
-* JPA (Jakarta Persistence)
-* IntelliJ IDEA
-
----
-
 ### Flujo General
 
-1. El cliente (Postman, frontend, etc.) hace una petición a un controlador (`web.controller`).
-2. El controlador llama al servicio (`application.service`) para ejecutar un caso de uso.
-3. El servicio usa puertos (`application.port.out`) para acceder a los datos que necesita.
-4. Los adaptadores (`infrastructure.adapter`) implementan los puertos usando repositorios y entidades JPA.
-5. Se usan mappers (`mapstruct`) para convertir entre modelos de dominio, entidades y DTOs.
-6. La respuesta final llega al cliente en un DTO limpio y estructurado.
+1. El cliente (Postman, frontend, etc.) hace una petición al controlador (`web.controller`).
+2. El controlador invoca el caso de uso definido en `application.service` a través de una interfaz de `port.in`.
+3. El servicio utiliza interfaces de `port.out` para solicitar acceso a datos o infraestructura externa.
+4. Estas interfaces son implementadas por adaptadores en `infrastructure.adapter`, que se apoyan en repositorios JPA.
+5. Se utilizan mappers para convertir entre:
+
+    * Entidades JPA ↔ Modelos del dominio.
+    * Modelos del dominio ↔ DTOs.
+6. El servicio retorna una respuesta limpia y estructurada al cliente.
 
 ---
 
 ### Decisiones de Diseño
 
-* **Separación clara de responsabilidades:** Cada capa tiene un rol único y bien definido.
-* **Desacoplamiento:** El dominio no depende de la base de datos ni de frameworks externos.
-* **MapStruct:** Facilita la transformación entre modelos sin lógica manual innecesaria.
-* **Ports & Adapters:** Implementa la arquitectura hexagonal, lo que permite cambiar la infraestructura (base de datos, REST, etc.) sin afectar el dominio.
+* **Separación de capas:** cada paquete tiene una única responsabilidad clara.
+* **Desacoplamiento:** la lógica del dominio no depende de detalles técnicos (como Spring, JPA o controladores).
+* **MapStruct:** mapeo automático entre entidades y modelos/DTOs sin código repetitivo.
+* **Arquitectura hexagonal:** permite reemplazar la infraestructura sin afectar el negocio.
 
 ---
 
@@ -85,7 +89,7 @@ src/
 
 * [x] Gestión de estudiantes y materias.
 * [x] Relación estudiante ↔ materias (bidireccional).
-* [x] Validación básica.
-* [x] MapStruct configurado para evitar recursividad y `StackOverflowError`.
+* [x] Validaciones básicas de entrada.
+* [x] MapStruct configurado para evitar `StackOverflowError` por recursividad.
 
 ---
