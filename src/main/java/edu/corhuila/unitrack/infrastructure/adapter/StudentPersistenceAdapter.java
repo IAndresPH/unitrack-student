@@ -1,12 +1,14 @@
 package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
+import edu.corhuila.unitrack.application.shared.exception.NotFoundException;
 import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.infrastructure.mapper.StudentEntityMapper;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.IStudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.STUDENT_ID_INVALID;
 
 @Service
 public class StudentPersistenceAdapter implements IStudentPersistencePort {
@@ -23,7 +25,8 @@ public class StudentPersistenceAdapter implements IStudentPersistencePort {
     @Transactional(readOnly = true)
     public Student findById(Long id) {
         return studentEntityMapper.toDomain(
-                studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"))
+                studentRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(STUDENT_ID_INVALID))
         );
     }
 

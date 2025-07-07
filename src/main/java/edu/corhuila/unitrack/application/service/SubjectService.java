@@ -1,7 +1,9 @@
 package edu.corhuila.unitrack.application.service;
 
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
+import edu.corhuila.unitrack.application.dto.request.SubjectUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
+import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
 import edu.corhuila.unitrack.application.mapper.ISubjectMapper;
 import edu.corhuila.unitrack.application.port.in.ISubjectService;
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
@@ -46,16 +48,14 @@ public class SubjectService implements ISubjectService {
 
     @Override
     @Transactional
-    public SubjectResponse update(Long id, SubjectRequest request) {
+    public SubjectUpdateResponse update(Long id, SubjectUpdateRequest request) {
         Subject subject = subjectPersistencePort.findById(id);
-
-        Student student = studentPersistencePort.findById(request.studentId());
 
         subject.setName(request.name());
         subject.setCredit(request.credit());
-        subject.setStudent(student);
+
         Subject updated = subjectPersistencePort.save(subject);
-        return iSubjectMapper.toResponseDto(updated);
+        return iSubjectMapper.toUpdateResponseDto(updated);
     }
 
     @Override

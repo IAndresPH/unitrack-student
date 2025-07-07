@@ -1,16 +1,15 @@
 package edu.corhuila.unitrack.application.port.in;
 
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
+import edu.corhuila.unitrack.application.dto.request.SubjectUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
+import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
 
 import java.util.List;
 
 public interface ISubjectService {
     SubjectResponse create(SubjectRequest request);
-    /**
-     * Listar todas las materias asociadas a un estudiante.
-     */
     List<SubjectResponse> getAllByStudentId(Long studentId);
-    SubjectResponse update(Long id, SubjectRequest request);
+    SubjectUpdateResponse update(Long id, SubjectUpdateRequest request);
     void delete(Long id);
 }

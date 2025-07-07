@@ -9,12 +9,14 @@ public class ValidationMessages {
     public static final String PROGRAM_REQUIRED = "El programa académico es obligatorio.";
     public static final String SEMESTER_REQUIRED = "El semestre es obligatorio.";
     public static final String SEMESTER_RANGE = "El semestre debe estar entre 1 y 10.";
+    public static final String STUDENT_ID_INVALID = "El ID del estudiante no existe.";
 
     // Subject
     public static final String SUBJECT_NAME_REQUIRED = "El nombre de la materia es obligatorio.";
     public static final String CREDIT_REQUIRED = "El número de créditos es obligatorio.";
     public static final String CREDIT_RANGE = "El número de créditos debe estar entre 1 y 13.";
     public static final String STUDENT_ID_REQUIRED = "El ID del estudiante es obligatorio.";
+    public static final String SUBJECT_ID_INVALID = "El ID de la materia no existe.";
 
     // Longitudes máximas
     public static final String NAME_SIZE = "El nombre debe tener entre 1 y 30 caracteres.";

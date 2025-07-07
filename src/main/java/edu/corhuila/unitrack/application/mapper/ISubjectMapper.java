@@ -1,16 +1,18 @@
 package edu.corhuila.unitrack.application.mapper;
 
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
+import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
+import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
+import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.domain.model.Subject;
 import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ISubjectMapper {
-
-    // Este sí lo implementa MapStruct
     Subject toEntity(SubjectRequest request);
+    SubjectUpdateResponse toUpdateResponseDto(Subject subject);
 
     // Este lo haces tú manualmente
     default SubjectResponse toResponseDto(Subject subject) {

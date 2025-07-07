@@ -1,7 +1,9 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
+import edu.corhuila.unitrack.application.dto.request.SubjectUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
+import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
 import edu.corhuila.unitrack.application.service.SubjectService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -41,8 +43,8 @@ public class SubjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubjectResponse> update(@PathVariable Long id, @Valid @RequestBody SubjectRequest request) {
-        SubjectResponse response = subjectService.update(id, request);
+    public ResponseEntity<SubjectUpdateResponse> update(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequest request) {
+        SubjectUpdateResponse response = subjectService.update(id, request);
         return ResponseEntity.ok(response);
     }
 

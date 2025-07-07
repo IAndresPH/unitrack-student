@@ -1,12 +1,14 @@
 package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
+import edu.corhuila.unitrack.application.shared.exception.NotFoundException;
 import edu.corhuila.unitrack.domain.model.Subject;
 import edu.corhuila.unitrack.infrastructure.mapper.SubjectEntityMapper;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.ISubjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.SUBJECT_ID_INVALID;
 
 @Service
 public class SubjectPersistenceAdapter implements ISubjectPersistencePort {
@@ -23,7 +25,8 @@ public class SubjectPersistenceAdapter implements ISubjectPersistencePort {
     @Transactional(readOnly = true)
     public Subject findById(Long id) {
         return subjectEntityMapper.toDomain(
-                subjectRepository.findById(id).orElseThrow(() -> new RuntimeException("Materia no encontrada"))
+                subjectRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(SUBJECT_ID_INVALID))
         );
     }
 
