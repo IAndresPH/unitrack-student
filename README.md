@@ -23,10 +23,12 @@
 | --------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `domain.model`                          | Contiene los modelos del dominio (entidades puras del negocio) sin dependencias externas.    |
 | `application.dto.request/response`      | Define los objetos que intercambian datos con el exterior (cliente).                         |
-| `application.service`                   | Implementa los casos de uso del negocio (lógica de aplicación).                              |
 | `application.mapper`                    | Transforma entre entidades del dominio y los DTOs.                                           |
 | `application.port.in`                   | Define las interfaces de entrada que los controladores usan para activar casos de uso.       |
 | `application.port.out`                  | Define lo que el dominio necesita de la infraestructura (por ejemplo, acceder a la BD).      |
+| `application.service`                   | Implementa los casos de uso del negocio (lógica de aplicación).                              |
+| `application.shared.constants`          | Contiene constantes reutilizables (por ejemplo, mensajes de validación Jakarta Bean).        |
+| `application.shared.exception`          | Manejo global de excepciones y estructura de respuestas de error para el cliente.            |
 | `infrastructure.persistence.entity`     | Contiene las entidades JPA que representan las tablas de la base de datos.                   |
 | `infrastructure.persistence.repository` | Interfaces de acceso a datos (repositorios JPA estándar).                                    |
 | `infrastructure.persistence.mapper`     | Mappers que convierten entre entidades JPA y modelos del dominio.                            |
@@ -47,15 +49,18 @@ src/
 │   ├── port/
 │   │   ├── in/
 │   │   └── out/
-│   └── service/
+│   ├── service/
+│   └── shared/
+│       ├── constants/
+│       └── exception/
 ├── domain/
 │   └── model/
 ├── infrastructure/
 │   ├── adapter/
 │   ├── mapper/
-│   ├── persistence/
-│   │   ├── entity/
-│   │   └── repository/
+│   └── persistence/
+│       ├── entity/
+│       └── repository/
 ├── web/
 │   └── controller/
 ```
@@ -70,8 +75,8 @@ src/
 4. Estas interfaces son implementadas por adaptadores en `infrastructure.adapter`, que se apoyan en repositorios JPA.
 5. Se utilizan mappers para convertir entre:
 
-    * Entidades JPA ↔ Modelos del dominio.
-    * Modelos del dominio ↔ DTOs.
+   * Entidades JPA ↔ Modelos del dominio.
+   * Modelos del dominio ↔ DTOs.
 6. El servicio retorna una respuesta limpia y estructurada al cliente.
 
 ---
@@ -82,6 +87,8 @@ src/
 * **Desacoplamiento:** la lógica del dominio no depende de detalles técnicos (como Spring, JPA o controladores).
 * **MapStruct:** mapeo automático entre entidades y modelos/DTOs sin código repetitivo.
 * **Arquitectura hexagonal:** permite reemplazar la infraestructura sin afectar el negocio.
+* **Validación unificada:** los DTOs definen las reglas de validación con mensajes reutilizables y centralizados.
+* **Manejo global de errores:** las validaciones fallidas o errores controlados retornan una respuesta clara y amigable con el cliente (`ErrorResponse`).
 
 ---
 
@@ -91,5 +98,5 @@ src/
 * [x] Relación estudiante ↔ materias (bidireccional).
 * [x] Validaciones básicas de entrada.
 * [x] MapStruct configurado para evitar `StackOverflowError` por recursividad.
-
----
+* [x] Mensajes de validación personalizados y reutilizables.
+* [x] Manejador global de errores para capturar y retornar respuestas consistentes (`ErrorResponse`).
