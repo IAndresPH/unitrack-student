@@ -1,8 +1,8 @@
-package edu.corhuila.unitrack.infrastructure.persistence.adapter;
+package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
 import edu.corhuila.unitrack.domain.model.Subject;
-import edu.corhuila.unitrack.infrastructure.persistence.mapper.SubjectEntityMapper;
+import edu.corhuila.unitrack.infrastructure.mapper.SubjectEntityMapper;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.ISubjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

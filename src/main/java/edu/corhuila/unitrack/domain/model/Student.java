@@ -1,12 +1,14 @@
 package edu.corhuila.unitrack.domain.model;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends Person{
+public class Student extends Person {
     private String studentCode;
     private String program;
     private Integer semester;
-    private Double averageGrade;
-    private List<Subject> subjects;
+    private Double averageGrade = 0.0;
+    private List<Subject> subjects = new ArrayList<>();
 
     public String getStudentCode() {
         return studentCode;
@@ -36,7 +38,7 @@ public class Student extends Person{
         return averageGrade;
     }
 
-    public void setAverageGrade(Double averageGrade) {
+    void setAverageGrade(Double averageGrade) {
         this.averageGrade = averageGrade;
     }
 

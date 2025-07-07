@@ -1,8 +1,9 @@
-package edu.corhuila.unitrack.infrastructure.persistence.adapter;
+package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
 import edu.corhuila.unitrack.domain.model.Student;
-import edu.corhuila.unitrack.infrastructure.persistence.mapper.StudentEntityMapper;
+import edu.corhuila.unitrack.infrastructure.mapper.StudentEntityMapper;
+import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.IStudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,19 @@ public class StudentPersistenceAdapter implements IStudentPersistencePort {
     }
 
     @Override
+    @Transactional
     public Student save(Student student) {
-        var entity = studentEntityMapper.toEntity(student);
-        var saved = studentRepository.save(entity);
+        StudentEntity existing = student.getId() != null
+                ? studentRepository.findById(student.getId()).orElse(null)
+                : null;
+
+        StudentEntity entity = studentEntityMapper.toEntity(student);
+
+        if (existing != null) {
+            entity.setSubjects(existing.getSubjects()); // ✅ preserva la lista original
+        }
+
+        StudentEntity saved = studentRepository.save(entity);
         return studentEntityMapper.toDomain(saved);
     }
 }

@@ -1,7 +1,9 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.StudentRequest;
+import edu.corhuila.unitrack.application.dto.request.StudentUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.StudentResponse;
+import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 import edu.corhuila.unitrack.application.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -38,8 +40,8 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponse> update(@PathVariable Long id, @Valid @RequestBody StudentRequest request) {
-        StudentResponse response = studentService.update(id, request);
+    public ResponseEntity<StudentUpdateResponse> update(@PathVariable Long id, @Valid @RequestBody StudentUpdateRequest request) {
+        StudentUpdateResponse response = studentService.update(id, request);
         return ResponseEntity.ok(response);
     }
 }

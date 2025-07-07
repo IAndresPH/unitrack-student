@@ -1,11 +1,15 @@
 package edu.corhuila.unitrack.application.service;
 
 import edu.corhuila.unitrack.application.dto.request.StudentRequest;
+import edu.corhuila.unitrack.application.dto.request.StudentUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.StudentResponse;
+import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 import edu.corhuila.unitrack.application.mapper.IStudentMapper;
 import edu.corhuila.unitrack.application.port.in.IStudentService;
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -20,12 +24,14 @@ public class StudentService implements IStudentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StudentResponse getById(Long id) {
         var student = studentPersistencePort.findById(id);
         return iStudentMapper.toResponseDto(student);
     }
 
     @Override
+    @Transactional
     public StudentResponse create(StudentRequest request) {
         var student = iStudentMapper.toEntity(request);
 
@@ -45,18 +51,17 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public StudentResponse update(Long id, StudentRequest request) {
+    @Transactional
+    public StudentUpdateResponse update(Long id, StudentUpdateRequest request) {
         var student = studentPersistencePort.findById(id);
 
         student.setFirstName(request.firstName());
         student.setLastName(request.lastName());
-        student.setEmail(request.email());
-        student.setStudentCode(request.studentCode());
         student.setProgram(request.program());
         student.setSemester(request.semester());
         student.setUpdatedAt(LocalDateTime.now());
 
         var updated = studentPersistencePort.save(student);
-        return iStudentMapper.toResponseDto(updated);
+        return iStudentMapper.toUpdateResponseDto(updated);
     }
 }

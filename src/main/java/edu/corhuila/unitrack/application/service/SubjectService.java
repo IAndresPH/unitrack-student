@@ -9,6 +9,7 @@ import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
 import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.domain.model.Subject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class SubjectService implements ISubjectService {
     }
 
     @Override
+    @Transactional
     public SubjectResponse create(SubjectRequest request) {
         Student student = studentPersistencePort.findById(request.studentId());
 
@@ -40,12 +42,14 @@ public class SubjectService implements ISubjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SubjectResponse> getAllByStudentId(Long studentId) {
         List<Subject> subjects = subjectPersistencePort.findAllByStudentId(studentId);
         return iSubjectMapper.toResponseDtoList(subjects);
     }
 
     @Override
+    @Transactional
     public SubjectResponse update(Long id, SubjectRequest request) {
         Subject subject = subjectPersistencePort.findById(id); // ← Aquí recuperas la materia
 

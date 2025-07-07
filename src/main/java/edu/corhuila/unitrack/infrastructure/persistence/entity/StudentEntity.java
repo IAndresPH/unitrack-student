@@ -1,13 +1,14 @@
 package edu.corhuila.unitrack.infrastructure.persistence.entity;
 
-import edu.corhuila.unitrack.domain.model.Subject;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,8 +26,8 @@ public class StudentEntity extends PersonEntity{
     private Integer semester;
 
     @Column(name = "average_grade")
-    private Double averageGrade;
+    private Double averageGrade = 0.0;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SubjectEntity> subjects;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<SubjectEntity> subjects = new ArrayList<>();
 }
