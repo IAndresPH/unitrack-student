@@ -10,8 +10,6 @@ import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.domain.model.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,8 +32,6 @@ public class SubjectService implements ISubjectService {
 
         Subject subject = iSubjectMapper.toEntity(request);
         subject.setStudent(student);
-        subject.setActive(true);
-        subject.setCreatedAt(LocalDateTime.now());
 
         Subject saved = subjectPersistencePort.save(subject);
         return iSubjectMapper.toResponseDto(saved);
@@ -51,15 +47,13 @@ public class SubjectService implements ISubjectService {
     @Override
     @Transactional
     public SubjectResponse update(Long id, SubjectRequest request) {
-        Subject subject = subjectPersistencePort.findById(id); // ← Aquí recuperas la materia
+        Subject subject = subjectPersistencePort.findById(id);
 
-        Student student = studentPersistencePort.findById(request.studentId()); // ← Aquí el estudiante
+        Student student = studentPersistencePort.findById(request.studentId());
 
         subject.setName(request.name());
         subject.setCredit(request.credit());
         subject.setStudent(student);
-        subject.setUpdatedAt(LocalDateTime.now());
-
         Subject updated = subjectPersistencePort.save(subject);
         return iSubjectMapper.toResponseDto(updated);
     }

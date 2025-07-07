@@ -1,6 +1,6 @@
 package edu.corhuila.unitrack.domain.model;
 
-public abstract class Person extends Base {
+public abstract class Person extends Auditable {
     private String firstName;
     private String lastName;
     private String email;

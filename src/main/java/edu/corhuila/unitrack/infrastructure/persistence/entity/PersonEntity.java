@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class PersonEntity extends BaseEntity{
+public abstract class PersonEntity extends AuditableEntity{
     @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
     @Column(name = "last_name", nullable = false, length = 30)

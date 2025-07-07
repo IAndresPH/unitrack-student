@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface StudentEntityMapper {
-    @Mapping(target = "subjects", ignore = true)
     StudentEntity toEntity(Student student);
     @Mapping(target = "subjects", ignore = true)
     Student toDomain(StudentEntity studentEntity);

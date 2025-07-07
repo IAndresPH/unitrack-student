@@ -47,7 +47,7 @@ public class StudentPersistenceAdapter implements IStudentPersistencePort {
         StudentEntity entity = studentEntityMapper.toEntity(student);
 
         if (existing != null) {
-            entity.setSubjects(existing.getSubjects()); // ✅ preserva la lista original
+            entity.setSubjects(existing.getSubjects());
         }
 
         StudentEntity saved = studentRepository.save(entity);
