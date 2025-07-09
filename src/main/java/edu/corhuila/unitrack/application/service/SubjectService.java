@@ -4,7 +4,7 @@ import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
 import edu.corhuila.unitrack.application.dto.request.SubjectUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
 import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
-import edu.corhuila.unitrack.application.mapper.ISubjectMapper;
+import edu.corhuila.unitrack.application.mapper.SubjectMapper;
 import edu.corhuila.unitrack.application.port.in.ISubjectService;
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
 import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
@@ -18,12 +18,12 @@ import java.util.List;
 public class SubjectService implements ISubjectService {
 
     private final ISubjectPersistencePort subjectPersistencePort;
-    private final ISubjectMapper iSubjectMapper;
+    private final SubjectMapper subjectMapper;
     private final IStudentPersistencePort studentPersistencePort;
 
-    public SubjectService(ISubjectPersistencePort subjectPersistencePort, ISubjectMapper iSubjectMapper, IStudentPersistencePort studentPersistencePort) {
+    public SubjectService(ISubjectPersistencePort subjectPersistencePort, SubjectMapper subjectMapper, IStudentPersistencePort studentPersistencePort) {
         this.subjectPersistencePort = subjectPersistencePort;
-        this.iSubjectMapper = iSubjectMapper;
+        this.subjectMapper = subjectMapper;
         this.studentPersistencePort = studentPersistencePort;
     }
 
@@ -32,18 +32,18 @@ public class SubjectService implements ISubjectService {
     public SubjectResponse create(SubjectRequest request) {
         Student student = studentPersistencePort.findById(request.studentId());
 
-        Subject subject = iSubjectMapper.toEntity(request);
+        Subject subject = subjectMapper.toEntity(request);
         subject.setStudent(student);
 
         Subject saved = subjectPersistencePort.save(subject);
-        return iSubjectMapper.toResponseDto(saved);
+        return subjectMapper.toResponseDto(saved);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<SubjectResponse> getAllByStudentId(Long studentId) {
         List<Subject> subjects = subjectPersistencePort.findAllByStudentId(studentId);
-        return iSubjectMapper.toResponseDtoList(subjects);
+        return subjectMapper.toResponseDtoList(subjects);
     }
 
     @Override
@@ -51,14 +51,14 @@ public class SubjectService implements ISubjectService {
     public SubjectUpdateResponse update(Long id, SubjectUpdateRequest request) {
         Subject subject = subjectPersistencePort.findById(id);
 
-        subject.setName(request.name());
-        subject.setCredit(request.credit());
+        subjectMapper.updateFromRequest(subject, request); // Usamos el mapper
 
         Subject updated = subjectPersistencePort.save(subject);
-        return iSubjectMapper.toUpdateResponseDto(updated);
+        return subjectMapper.toUpdateResponseDto(updated);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Subject subject = subjectPersistencePort.findById(id);
         subjectPersistencePort.delete(subject);

@@ -10,6 +10,8 @@ public class ValidationMessages {
     public static final String SEMESTER_REQUIRED = "El semestre es obligatorio.";
     public static final String SEMESTER_RANGE = "El semestre debe estar entre 1 y 10.";
     public static final String STUDENT_ID_INVALID = "El ID del estudiante no existe.";
+    public static final String STUDENT_EMAIL_INVALID = "Correo ya registrado.";
+    public static final String STUDENT_CODE_INVALID = "Código de estudiante ya registrado.";
 
     // Subject
     public static final String SUBJECT_NAME_REQUIRED = "El nombre de la materia es obligatorio.";
@@ -26,4 +28,18 @@ public class ValidationMessages {
     public static final String PROGRAM_SIZE = "El programa debe tener como máximo 30 caracteres.";
     public static final String SUBJECT_NAME_SIZE = "El nombre de la materia debe tener entre 1 y 30 caracteres.";
 
+    // Cut
+    public static final String CUT_NAME_REQUIRED = "El nombre del corte es obligatorio.";
+    public static final String CUT_PERCENTAGE_REQUIRED = "El porcentaje del corte es obligatorio.";
+    public static final String CUT_PERCENTAGE_RANGE = "El porcentaje debe estar entre 0.1 y 100.";
+    public static final String SUBJECT_LIST_REQUIRED = "Debe incluir al menos una materia.";
+    public static final String CUT_ID_INVALID = "El ID del corte no existe.";
+
+    // Activity
+    public static final String ACTIVITY_NAME_REQUIRED = "El nombre de la actividad es obligatorio.";
+    public static final String ACTIVITY_NAME_SIZE = "El nombre de la actividad debe tener entre 1 y 30 caracteres.";
+    public static final String ACTIVITY_PERCENTAGE_REQUIRED = "El porcentaje de la actividad es obligatorio.";
+    public static final String ACTIVITY_PERCENTAGE_RANGE = "El porcentaje debe estar entre 0.1 y 100.";
+    public static final String CUT_ID_REQUIRED = "El ID del corte es obligatorio.";
+    public static final String ACTIVITY_ID_INVALID = "El ID de la actividad no existe.";
 }

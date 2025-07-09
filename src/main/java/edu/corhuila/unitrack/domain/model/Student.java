@@ -1,5 +1,7 @@
 package edu.corhuila.unitrack.domain.model;
 
+import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +50,19 @@ public class Student extends Person {
 
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public static Student fromEntity(StudentEntity entity) {
+        Student student = new Student();
+        student.setId(entity.getId());
+        student.setFirstName(entity.getFirstName());
+        student.setLastName(entity.getLastName());
+        student.setEmail(entity.getEmail());
+        student.setStudentCode(entity.getStudentCode());
+        student.setProgram(entity.getProgram());
+        student.setSemester(entity.getSemester());
+        student.averageGrade = entity.getAverageGrade();
+
+        return student;
     }
 }

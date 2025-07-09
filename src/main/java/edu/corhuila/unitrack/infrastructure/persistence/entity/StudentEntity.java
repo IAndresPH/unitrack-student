@@ -11,10 +11,10 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "students")
+@Getter
+@Setter
 public class StudentEntity extends PersonEntity{
     @Column(name = "student_code", unique = true, length = 20)
     private String studentCode;

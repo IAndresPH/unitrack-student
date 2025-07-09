@@ -1,11 +1,11 @@
 package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
+import edu.corhuila.unitrack.infrastructure.persistence.repository.IStudentRepository;
 import edu.corhuila.unitrack.application.shared.exception.NotFoundException;
 import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.infrastructure.mapper.StudentEntityMapper;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
-import edu.corhuila.unitrack.infrastructure.persistence.repository.IStudentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.STUDENT_ID_INVALID;
@@ -14,17 +14,15 @@ import static edu.corhuila.unitrack.application.shared.constants.ValidationMessa
 public class StudentPersistenceAdapter implements IStudentPersistencePort {
 
     private final IStudentRepository studentRepository;
-    private final StudentEntityMapper studentEntityMapper;
 
-    public StudentPersistenceAdapter(IStudentRepository studentRepository, StudentEntityMapper studentEntityMapper) {
+    public StudentPersistenceAdapter(IStudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.studentEntityMapper = studentEntityMapper;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Student findById(Long id) {
-        return studentEntityMapper.toDomain(
+        return StudentEntityMapper.toDomain(
                 studentRepository.findById(id)
                         .orElseThrow(() -> new NotFoundException(STUDENT_ID_INVALID))
         );
@@ -47,13 +45,9 @@ public class StudentPersistenceAdapter implements IStudentPersistencePort {
                 ? studentRepository.findById(student.getId()).orElse(null)
                 : null;
 
-        StudentEntity entity = studentEntityMapper.toEntity(student);
-
-        if (existing != null) {
-            entity.setSubjects(existing.getSubjects());
-        }
+        StudentEntity entity = StudentEntityMapper.toEntity(student, existing);
 
         StudentEntity saved = studentRepository.save(entity);
-        return studentEntityMapper.toDomain(saved);
+        return StudentEntityMapper.toDomain(saved);
     }
 }
