@@ -4,5 +4,7 @@ public record ActivityResponse(
     Long id,
     String name,
     Double percentage,
-    Long cutId
+    Double grade,
+    Long cutId,
+    Long subjectId
 ) {}

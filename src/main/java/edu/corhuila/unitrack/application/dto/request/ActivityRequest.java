@@ -17,6 +17,11 @@ public record ActivityRequest(
     @DecimalMax(value = "100.0", message = ACTIVITY_PERCENTAGE_RANGE)
     Double percentage,
 
+    Double grade,
+
     @NotNull(message = CUT_ID_REQUIRED)
-    Long cutId
+    Long cutId,
+
+    @NotNull(message = SUBJECT_ID_REQUIRED)
+    Long subjectId
 ) {}

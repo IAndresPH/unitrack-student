@@ -1,0 +1,11 @@
+package edu.corhuila.unitrack.application.port.out;
+
+import edu.corhuila.unitrack.domain.model.Activity;
+import java.util.List;
+
+public interface IActivityPersistencePort {
+    Activity findById(Long id);
+    Activity save(Activity activity);
+    void deleteById(Long id);
+    List<Activity> findAllBySubjectId(Long subjectId);
+}

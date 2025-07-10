@@ -41,5 +41,6 @@ public class ValidationMessages {
     public static final String ACTIVITY_PERCENTAGE_REQUIRED = "El porcentaje de la actividad es obligatorio.";
     public static final String ACTIVITY_PERCENTAGE_RANGE = "El porcentaje debe estar entre 0.1 y 100.";
     public static final String CUT_ID_REQUIRED = "El ID del corte es obligatorio.";
+    public static final String SUBJECT_ID_REQUIRED = "El ID de la materia es obligatorio.";
     public static final String ACTIVITY_ID_INVALID = "El ID de la actividad no existe.";
 }

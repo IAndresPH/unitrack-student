@@ -26,4 +26,8 @@ public class ActivityEntity extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cut_id", nullable = false)
     private CutEntity cut;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private SubjectEntity subject;
 }

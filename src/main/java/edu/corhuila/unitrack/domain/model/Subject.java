@@ -1,12 +1,14 @@
 package edu.corhuila.unitrack.domain.model;
 
 import edu.corhuila.unitrack.infrastructure.persistence.entity.SubjectEntity;
+import java.util.List;
 
 public class Subject extends Base {
     private String name;
     private Integer credit;
     private Double finalGrade = 0.0;
     private Student student;
+    private List<Cut> cuts;
 
     public String getName() {
         return name;
@@ -38,6 +40,14 @@ public class Subject extends Base {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public List<Cut> getCuts() {
+        return cuts;
+    }
+
+    public void setCuts(List<Cut> cuts) {
+        this.cuts = cuts;
     }
 
     public static Subject fromEntity(SubjectEntity entity) {
