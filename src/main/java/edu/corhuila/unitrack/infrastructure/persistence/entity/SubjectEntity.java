@@ -1,12 +1,14 @@
 package edu.corhuila.unitrack.infrastructure.persistence.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "subjects")
@@ -22,7 +24,6 @@ public class SubjectEntity extends BaseEntity{
     @Column(name = "final_grade")
     private Double finalGrade = 0.0;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private StudentEntity student;
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EnrollmentSubjectEntity> enrollmentSubjects = new ArrayList<>();
 }

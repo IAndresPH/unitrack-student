@@ -48,4 +48,16 @@ public class CutEntityMapper {
     public static Cut toDomain(CutEntity entity) {
         return Cut.fromEntity(entity);
     }
+
+    public static Cut toDomainWithoutRelations(CutEntity entity) {
+        if (entity == null) return null;
+
+        Cut cut = new Cut();
+        cut.setId(entity.getId());
+        cut.setName(entity.getName());
+        cut.setPercentage(entity.getPercentage());
+        cut.setFinalGrade(entity.getFinalGrade());
+        // NO cargamos ni subjects ni activities
+        return cut;
+    }
 }

@@ -2,7 +2,6 @@ package edu.corhuila.unitrack.domain.model;
 
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends Person {
@@ -10,7 +9,7 @@ public class Student extends Person {
     private String program;
     private Integer semester;
     private Double averageGrade = 0.0;
-    private List<Subject> subjects = new ArrayList<>();
+    private List<Enrollment> enrollments;
 
     public String getStudentCode() {
         return studentCode;
@@ -40,19 +39,21 @@ public class Student extends Person {
         return averageGrade;
     }
 
-    void setAverageGrade(Double averageGrade) {
+    public void setAverageGrade(Double averageGrade) {
         this.averageGrade = averageGrade;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
     }
 
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
     public static Student fromEntity(StudentEntity entity) {
+        if (entity == null) return null;
+
         Student student = new Student();
         student.setId(entity.getId());
         student.setFirstName(entity.getFirstName());
@@ -61,7 +62,10 @@ public class Student extends Person {
         student.setStudentCode(entity.getStudentCode());
         student.setProgram(entity.getProgram());
         student.setSemester(entity.getSemester());
-        student.averageGrade = entity.getAverageGrade();
+        student.setAverageGrade(entity.getAverageGrade());
+        student.setCreatedAt(entity.getCreatedAt());
+        student.setUpdatedAt(entity.getUpdatedAt());
+        student.setActive(entity.getActive());
 
         return student;
     }

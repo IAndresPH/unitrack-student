@@ -19,6 +19,7 @@ public class ValidationMessages {
     public static final String CREDIT_RANGE = "El número de créditos debe estar entre 1 y 13.";
     public static final String STUDENT_ID_REQUIRED = "El ID del estudiante es obligatorio.";
     public static final String SUBJECT_ID_INVALID = "El ID de la materia no existe.";
+    public static final String SUBJECT_ID_REQUIRED = "El ID de la materia es obligatorio.";
 
     // Longitudes máximas
     public static final String NAME_SIZE = "El nombre debe tener entre 1 y 30 caracteres.";
@@ -34,6 +35,7 @@ public class ValidationMessages {
     public static final String CUT_PERCENTAGE_RANGE = "El porcentaje debe estar entre 0.1 y 100.";
     public static final String SUBJECT_LIST_REQUIRED = "Debe incluir al menos una materia.";
     public static final String CUT_ID_INVALID = "El ID del corte no existe.";
+    public static final String CUT_LIMIT_EXCEEDED = "La materia ya tiene 3 cortes asociados";
 
     // Activity
     public static final String ACTIVITY_NAME_REQUIRED = "El nombre de la actividad es obligatorio.";
@@ -41,6 +43,9 @@ public class ValidationMessages {
     public static final String ACTIVITY_PERCENTAGE_REQUIRED = "El porcentaje de la actividad es obligatorio.";
     public static final String ACTIVITY_PERCENTAGE_RANGE = "El porcentaje debe estar entre 0.1 y 100.";
     public static final String CUT_ID_REQUIRED = "El ID del corte es obligatorio.";
-    public static final String SUBJECT_ID_REQUIRED = "El ID de la materia es obligatorio.";
     public static final String ACTIVITY_ID_INVALID = "El ID de la actividad no existe.";
+    public static final String ACTIVITY_PERCENTAGE_EXCEEDED = "La suma de los porcentajes no puede superar el 100%";
+
+    // Enrollment
+    public static final String ENROLLMENT_ID_INVALID = "La matrícula con el ID proporcionado no existe.";
 }

@@ -1,8 +1,7 @@
 package edu.corhuila.unitrack.application.dto.response;
 
-public record SubjectResponse(
+public record SubjectMiniResponse(
     Long id,
     String name,
-    Integer credit,
-    Double finalGrade
+    Integer credit
 ) {}

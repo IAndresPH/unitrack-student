@@ -15,8 +15,5 @@ public record SubjectRequest(
     @NotNull(message = CREDIT_REQUIRED)
     @Min(value = 1, message = CREDIT_RANGE)
     @Max(value = 13, message = CREDIT_RANGE)
-    Integer credit,
-
-    @NotNull(message = STUDENT_ID_REQUIRED)
-    Long studentId
+    Integer credit
 ) {}

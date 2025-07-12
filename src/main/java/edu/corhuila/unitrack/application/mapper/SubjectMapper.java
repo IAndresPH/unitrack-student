@@ -17,7 +17,6 @@ public class SubjectMapper {
         Subject subject = new Subject();
         subject.setName(request.name());
         subject.setCredit(request.credit());
-        // El `student` se asigna en el servicio usando `studentPersistencePort.findById(...)`
         return subject;
     }
 
@@ -38,8 +37,7 @@ public class SubjectMapper {
                 subject.getId(),
                 subject.getName(),
                 subject.getCredit(),
-                subject.getFinalGrade(),
-                subject.getStudent() != null ? subject.getStudent().getId() : null
+                subject.getFinalGrade()
         );
     }
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -23,11 +24,6 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ActivityResponse> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(activityService.getById(id));
-    }
-
     @PostMapping
     public ResponseEntity<ActivityResponse> create(@RequestBody ActivityRequest request) {
         return ResponseEntity.ok(activityService.create(request));
@@ -37,5 +33,15 @@ public class ActivityController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         activityService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{studentId}/subject/{subjectId}/cut/{cutId}")
+    public ResponseEntity<List<ActivityResponse>> getAllByStudentSubjectAndCut(
+            @PathVariable Long studentId,
+            @PathVariable Long subjectId,
+            @PathVariable Long cutId) {
+        return ResponseEntity.ok(
+                activityService.getAllByStudentSubjectAndCut(studentId, subjectId, cutId)
+        );
     }
 }

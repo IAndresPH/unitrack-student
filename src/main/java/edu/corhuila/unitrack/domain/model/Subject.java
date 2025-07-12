@@ -6,9 +6,8 @@ import java.util.List;
 public class Subject extends Base {
     private String name;
     private Integer credit;
-    private Double finalGrade = 0.0;
-    private Student student;
-    private List<Cut> cuts;
+    private Double finalGrade;
+    private List<Cut> cuts; // útil
 
     public String getName() {
         return name;
@@ -34,14 +33,6 @@ public class Subject extends Base {
         this.finalGrade = finalGrade;
     }
 
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
     public List<Cut> getCuts() {
         return cuts;
     }
@@ -58,13 +49,6 @@ public class Subject extends Base {
         subject.setName(entity.getName());
         subject.setCredit(entity.getCredit());
         subject.setFinalGrade(entity.getFinalGrade());
-
-        // Evitamos recursividad cargando solo el ID del estudiante
-        if (entity.getStudent() != null) {
-            Student student = new Student();
-            student.setId(entity.getStudent().getId());
-            subject.setStudent(student);
-        }
 
         return subject;
     }

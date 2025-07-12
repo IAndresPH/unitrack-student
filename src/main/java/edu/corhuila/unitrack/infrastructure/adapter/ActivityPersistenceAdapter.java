@@ -18,13 +18,6 @@ public class ActivityPersistenceAdapter implements IActivityPersistencePort {
     }
 
     @Override
-    public Activity findById(Long id) {
-        ActivityEntity entity = activityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Actividad no encontrada con id: " + id));
-        return ActivityEntityMapper.toDomain(entity); // <-- este
-    }
-
-    @Override
     public Activity save(Activity activity) {
         ActivityEntity entity = ActivityEntityMapper.toEntity(activity); // <-- este
 
@@ -41,6 +34,23 @@ public class ActivityPersistenceAdapter implements IActivityPersistencePort {
     public List<Activity> findAllBySubjectId(Long subjectId) {
         List<ActivityEntity> entities = activityRepository.findAllBySubject_Id(subjectId);
         return entities.stream()
+                .map(ActivityEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Activity> findAllByCutIdAndSubjectId(Long cutId, Long subjectId) {
+        List<ActivityEntity> entities = activityRepository.findAllByCut_IdAndSubject_Id(cutId, subjectId);
+        return entities.stream()
+                .map(ActivityEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Activity> findAllByStudentIdAndSubjectIdAndCutId(Long studentId, Long subjectId, Long cutId) {
+        return activityRepository
+                .findAllByStudentIdAndSubjectIdAndCutId(studentId, subjectId, cutId)
+                .stream()
                 .map(ActivityEntityMapper::toDomain)
                 .toList();
     }

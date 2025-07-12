@@ -1,9 +1,7 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
-import edu.corhuila.unitrack.application.dto.request.SubjectUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
-import edu.corhuila.unitrack.application.dto.response.SubjectUpdateResponse;
 import edu.corhuila.unitrack.application.service.SubjectService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,10 +11,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
@@ -35,21 +33,15 @@ public class SubjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<SubjectResponse>> getAllByStudentId(@PathVariable Long studentId) {
-        List<SubjectResponse> subjects = subjectService.getAllByStudentId(studentId);
-        return ResponseEntity.ok(subjects);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<SubjectUpdateResponse> update(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequest request) {
-        SubjectUpdateResponse response = subjectService.update(id, request);
-        return ResponseEntity.ok(response);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         subjectService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<SubjectResponse>> getAllByStudentId(@PathVariable Long studentId) {
+        List<SubjectResponse> subjects = subjectService.getAllByStudentId(studentId);
+        return ResponseEntity.ok(subjects);
     }
 }

@@ -64,4 +64,28 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(PercentageExceededException.class)
+    public ResponseEntity<ErrorResponse> handlePercentageExceededException(PercentageExceededException ex, HttpServletRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(TooManyCutsException.class)
+    public ResponseEntity<ErrorResponse> handleTooManyCutsException(TooManyCutsException ex, HttpServletRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+        return ResponseEntity.badRequest().body(response);
+    }
 }

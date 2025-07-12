@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ISubjectPersistencePort {
     Subject findById(Long id);
-    List<Subject> findAllByStudentId(Long studentId);
     Subject save(Subject subject);
     void delete(Subject subject);
+    List<Subject> findAllByStudentId(Long studentId);
 }

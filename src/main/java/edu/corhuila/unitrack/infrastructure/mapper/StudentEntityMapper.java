@@ -9,7 +9,6 @@ public class StudentEntityMapper {
         if (student == null) return null;
 
         StudentEntity entity = new StudentEntity();
-
         entity.setId(student.getId());
         entity.setFirstName(student.getFirstName());
         entity.setLastName(student.getLastName());
@@ -19,20 +18,16 @@ public class StudentEntityMapper {
         entity.setSemester(student.getSemester());
         entity.setAverageGrade(student.getAverageGrade());
         entity.setCreatedAt(student.getCreatedAt());
-
-        entity.setActive(student.getActive() != null ? student.getActive()
-                : (existing != null ? existing.getActive() : Boolean.TRUE));
         entity.setUpdatedAt(student.getUpdatedAt());
 
-        if (existing != null && existing.getSubjects() != null) {
-            entity.setSubjects(existing.getSubjects());
-        }
+        entity.setActive(student.getActive() != null
+                ? student.getActive()
+                : (existing != null ? existing.getActive() : Boolean.TRUE));
 
         return entity;
     }
 
     public static Student toDomain(StudentEntity entity) {
-        if (entity == null) return null;
         return Student.fromEntity(entity);
     }
 }

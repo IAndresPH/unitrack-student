@@ -1,13 +1,15 @@
 package edu.corhuila.unitrack.infrastructure.adapter;
 
 import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
-import edu.corhuila.unitrack.infrastructure.persistence.repository.ISubjectRepository;
 import edu.corhuila.unitrack.application.shared.exception.NotFoundException;
 import edu.corhuila.unitrack.domain.model.Subject;
 import edu.corhuila.unitrack.infrastructure.mapper.SubjectEntityMapper;
+import edu.corhuila.unitrack.infrastructure.persistence.repository.ISubjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.SUBJECT_ID_INVALID;
 
 @Service
@@ -29,14 +31,6 @@ public class SubjectPersistenceAdapter implements ISubjectPersistencePort {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Subject> findAllByStudentId(Long studentId) {
-        return subjectRepository.findAllByStudentId(studentId).stream()
-                .map(SubjectEntityMapper::toDomain)
-                .toList();
-    }
-
-    @Override
     @Transactional
     public Subject save(Subject subject) {
         var entity = SubjectEntityMapper.toEntity(subject);
@@ -48,5 +42,13 @@ public class SubjectPersistenceAdapter implements ISubjectPersistencePort {
     public void delete(Subject subject) {
         var entity = SubjectEntityMapper.toEntity(subject);
         subjectRepository.delete(entity);
+    }
+
+    @Override
+    public List<Subject> findAllByStudentId(Long studentId) {
+        return subjectRepository.findAllByStudentId(studentId)
+            .stream()
+            .map(SubjectEntityMapper::toDomain)
+            .toList();
     }
 }
