@@ -1,7 +1,6 @@
 package edu.corhuila.unitrack.domain.model;
 
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
-
 import java.util.List;
 
 public class Student extends Person {
@@ -10,6 +9,8 @@ public class Student extends Person {
     private Integer semester;
     private Double averageGrade = 0.0;
     private List<Enrollment> enrollments;
+    private List<StudentSubject> studentSubjects;
+    private List<StudentActivity> studentActivities;
 
     public String getStudentCode() {
         return studentCode;
@@ -49,6 +50,22 @@ public class Student extends Person {
 
     public void setEnrollments(List<Enrollment> enrollments) {
         this.enrollments = enrollments;
+    }
+
+    public List<StudentSubject> getStudentSubjects() {
+        return studentSubjects;
+    }
+
+    public void setStudentSubjects(List<StudentSubject> studentSubjects) {
+        this.studentSubjects = studentSubjects;
+    }
+
+    public List<StudentActivity> getStudentActivities() {
+        return studentActivities;
+    }
+
+    public void setStudentActivities(List<StudentActivity> studentActivities) {
+        this.studentActivities = studentActivities;
     }
 
     public static Student fromEntity(StudentEntity entity) {

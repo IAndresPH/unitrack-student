@@ -10,7 +10,6 @@ import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
 import edu.corhuila.unitrack.domain.model.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -39,12 +38,6 @@ public class SubjectService implements ISubjectService {
         return subjectMapper.toResponseDto(saved);
     }
 
-    private Subject setAndReturnSubjectWithFinalGrade(Subject subject) {
-        double finalGrade = activityService.calculateFinalGradeBySubjectId(subject.getId());
-        subject.setFinalGrade(finalGrade);
-        return subject;
-    }
-
     @Override
     @Transactional
     public void delete(Long id) {
@@ -56,7 +49,6 @@ public class SubjectService implements ISubjectService {
     public List<SubjectResponse> getAllByStudentId(Long studentId) {
         return subjectPersistencePort.findAllByStudentId(studentId)
                 .stream()
-                .map(this::setAndReturnSubjectWithFinalGrade)
                 .map(subjectMapper::toResponseDto)
                 .toList();
     }

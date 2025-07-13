@@ -15,8 +15,6 @@ public class ActivityMapper {
         activity.setName(request.name());
         activity.setPercentage(request.percentage());
 
-        activity.setGrade(request.grade() != null ? request.grade() : 0.0);
-
         Cut cut = new Cut();
         cut.setId(request.cutId());
         activity.setCut(cut);
@@ -36,7 +34,6 @@ public class ActivityMapper {
                 activity.getId(),
                 activity.getName(),
                 activity.getPercentage(),
-                activity.getGrade(),
                 cutId,
                 subjectId
         );

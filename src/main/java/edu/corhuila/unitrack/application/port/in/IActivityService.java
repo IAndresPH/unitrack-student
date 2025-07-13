@@ -7,6 +7,5 @@ import java.util.List;
 public interface IActivityService {
     ActivityResponse create(ActivityRequest request);
     void delete(Long id);
-    Double calculateFinalGradeBySubjectId(Long subjectId);
     List<ActivityResponse> getAllByStudentSubjectAndCut(Long studentId, Long subjectId, Long cutId);
 }

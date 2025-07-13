@@ -12,7 +12,6 @@ import edu.corhuila.unitrack.domain.model.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.ACTIVITY_PERCENTAGE_EXCEEDED;
 
 @Service
@@ -32,7 +31,7 @@ public class ActivityService implements IActivityService {
         Double nuevoPorcentaje = request.percentage();
 
         // Paso 1: Obtener todas las actividades existentes para el mismo corte y materia
-        List<Activity> actividadesExistentes = activityPersistencePort.findAllByCutIdAndSubjectId(
+        List<Activity> actividadesExistentes = activityPersistencePort.findAllBySubjectIdAndCutId(
                 request.cutId(), request.subjectId()
         );
 
@@ -64,20 +63,6 @@ public class ActivityService implements IActivityService {
     @Transactional
     public void delete(Long id) {
         activityPersistencePort.deleteById(id);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Double calculateFinalGradeBySubjectId(Long subjectId) {
-        List<Activity> activities = activityPersistencePort.findAllBySubjectId(subjectId);
-
-        return activities.stream()
-                .mapToDouble(a -> {
-                    double grade = a.getGrade() != null ? a.getGrade() : 0.0;
-                    double percentage = a.getPercentage() != null ? a.getPercentage() : 0.0;
-                    return grade * (percentage / 100.0);
-                })
-                .sum();
     }
 
     @Override

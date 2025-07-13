@@ -1,14 +1,12 @@
 package edu.corhuila.unitrack.domain.model;
 
 import edu.corhuila.unitrack.infrastructure.persistence.entity.CutEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cut extends Base{
     private String name;
     private Double percentage;
-    private Double finalGrade = 0.0;
     private List<Subject> subject = new ArrayList<>();
     private List<Activity> activities = new ArrayList<>();
 
@@ -26,14 +24,6 @@ public class Cut extends Base{
 
     public void setPercentage(Double percentage) {
         this.percentage = percentage;
-    }
-
-    public Double getFinalGrade() {
-        return finalGrade;
-    }
-
-    public void setFinalGrade(Double finalGrade) {
-        this.finalGrade = finalGrade;
     }
 
     public List<Subject> getSubject() {
@@ -59,9 +49,8 @@ public class Cut extends Base{
         cut.setId(entity.getId());
         cut.setName(entity.getName());
         cut.setPercentage(entity.getPercentage());
-        cut.setFinalGrade(entity.getFinalGrade());
 
-        // Mapear solo los IDs de Subject para evitar recursión o carga pesada
+        // Mapear solo los IDs de Subject para evitar recursión
         if (entity.getSubjects() != null) {
             List<Subject> subjects = entity.getSubjects().stream()
                     .map(subjectEntity -> {
@@ -73,7 +62,6 @@ public class Cut extends Base{
             cut.setSubject(subjects);
         }
 
-        // Mapear solo los IDs de Activity para evitar cargar campos innecesarios
         if (entity.getActivities() != null) {
             List<Activity> activities = entity.getActivities().stream()
                     .map(activityEntity -> {

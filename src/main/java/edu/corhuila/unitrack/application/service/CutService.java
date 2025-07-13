@@ -9,6 +9,8 @@ import edu.corhuila.unitrack.application.shared.exception.TooManyCutsException;
 import edu.corhuila.unitrack.domain.model.Cut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.CUT_LIMIT_EXCEEDED;
 
 @Service
@@ -36,5 +38,14 @@ public class CutService implements ICutService {
         Cut cut = cutMapper.toEntity(request);
         Cut saved = cutPersistencePort.save(cut);
         return cutMapper.toResponseDto(saved);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CutResponse> getAllByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return cutPersistencePort.findAllByStudentIdAndSubjectId(studentId, subjectId)
+                .stream()
+                .map(cutMapper::toResponseDto)
+                .toList();
     }
 }

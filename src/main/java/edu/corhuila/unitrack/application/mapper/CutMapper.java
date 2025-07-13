@@ -38,7 +38,6 @@ public class CutMapper {
                 cut.getId(),
                 cut.getName(),
                 cut.getPercentage(),
-                cut.getFinalGrade(),
                 subjectIds
         );
     }

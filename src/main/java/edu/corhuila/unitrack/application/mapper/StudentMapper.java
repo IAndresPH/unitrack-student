@@ -51,7 +51,6 @@ public class StudentMapper {
     }
 
     public void updateFromRequest(Student student, StudentUpdateRequest request) {
-        // Método auxiliar para actualizaciones
         if (student != null && request != null) {
             student.setFirstName(request.firstName());
             student.setLastName(request.lastName());

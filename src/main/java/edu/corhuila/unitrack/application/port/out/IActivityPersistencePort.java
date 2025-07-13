@@ -7,6 +7,6 @@ public interface IActivityPersistencePort {
     Activity save(Activity activity);
     void deleteById(Long id);
     List<Activity> findAllBySubjectId(Long subjectId);
-    List<Activity> findAllByCutIdAndSubjectId(Long cutId, Long subjectId);
+    List<Activity> findAllBySubjectIdAndCutId(Long cutId, Long subjectId);
     List<Activity> findAllByStudentIdAndSubjectIdAndCutId(Long studentId, Long subjectId, Long cutId);
 }

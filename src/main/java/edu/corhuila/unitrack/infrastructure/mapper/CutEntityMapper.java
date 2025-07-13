@@ -16,7 +16,6 @@ public class CutEntityMapper {
         entity.setId(cut.getId());
         entity.setName(cut.getName());
         entity.setPercentage(cut.getPercentage());
-        entity.setFinalGrade(cut.getFinalGrade());
 
         // Mapear las materias por ID
         if (cut.getSubject() != null) {
@@ -56,7 +55,6 @@ public class CutEntityMapper {
         cut.setId(entity.getId());
         cut.setName(entity.getName());
         cut.setPercentage(entity.getPercentage());
-        cut.setFinalGrade(entity.getFinalGrade());
         // NO cargamos ni subjects ni activities
         return cut;
     }

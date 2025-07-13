@@ -8,6 +8,8 @@ import edu.corhuila.unitrack.infrastructure.persistence.repository.ICutRepositor
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CutPersistenceAdapter implements ICutPersistencePort {
 
@@ -38,5 +40,13 @@ public class CutPersistenceAdapter implements ICutPersistencePort {
     @Override
     public int countCutsBySubjectId(Long subjectId) {
         return cutRepository.countBySubjectId(subjectId);
+    }
+
+    @Override
+    public List<Cut> findAllByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        List<CutEntity> entities = cutRepository.findAllByStudentIdAndSubjectId(studentId, subjectId);
+        return entities.stream()
+                .map(CutEntityMapper::toDomain)
+                .toList();
     }
 }

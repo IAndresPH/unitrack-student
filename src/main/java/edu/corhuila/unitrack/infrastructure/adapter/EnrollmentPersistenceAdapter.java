@@ -8,9 +8,7 @@ import edu.corhuila.unitrack.infrastructure.persistence.entity.EnrollmentEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.IEnrollmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.ENROLLMENT_ID_INVALID;
 
 @Service

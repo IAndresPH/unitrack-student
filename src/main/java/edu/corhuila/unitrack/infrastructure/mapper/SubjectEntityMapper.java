@@ -11,7 +11,6 @@ public class SubjectEntityMapper {
         entity.setId(subject.getId());
         entity.setName(subject.getName());
         entity.setCredit(subject.getCredit());
-        entity.setFinalGrade(subject.getFinalGrade());
 
         return entity;
     }

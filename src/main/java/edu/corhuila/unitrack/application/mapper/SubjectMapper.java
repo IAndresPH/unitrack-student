@@ -37,7 +37,7 @@ public class SubjectMapper {
                 subject.getId(),
                 subject.getName(),
                 subject.getCredit(),
-                subject.getFinalGrade()
+                0.0
         );
     }
 

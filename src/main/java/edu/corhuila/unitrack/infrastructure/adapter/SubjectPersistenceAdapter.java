@@ -7,9 +7,7 @@ import edu.corhuila.unitrack.infrastructure.mapper.SubjectEntityMapper;
 import edu.corhuila.unitrack.infrastructure.persistence.repository.ISubjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.SUBJECT_ID_INVALID;
 
 @Service

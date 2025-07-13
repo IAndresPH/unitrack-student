@@ -6,7 +6,6 @@ import java.util.List;
 public class Subject extends Base {
     private String name;
     private Integer credit;
-    private Double finalGrade;
     private List<Cut> cuts; // útil
 
     public String getName() {
@@ -25,14 +24,6 @@ public class Subject extends Base {
         this.credit = credit;
     }
 
-    public Double getFinalGrade() {
-        return finalGrade;
-    }
-
-    public void setFinalGrade(Double finalGrade) {
-        this.finalGrade = finalGrade;
-    }
-
     public List<Cut> getCuts() {
         return cuts;
     }
@@ -48,7 +39,6 @@ public class Subject extends Base {
         subject.setId(entity.getId());
         subject.setName(entity.getName());
         subject.setCredit(entity.getCredit());
-        subject.setFinalGrade(entity.getFinalGrade());
 
         return subject;
     }

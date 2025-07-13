@@ -39,7 +39,7 @@ public class ActivityPersistenceAdapter implements IActivityPersistencePort {
     }
 
     @Override
-    public List<Activity> findAllByCutIdAndSubjectId(Long cutId, Long subjectId) {
+    public List<Activity> findAllBySubjectIdAndCutId(Long cutId, Long subjectId) {
         List<ActivityEntity> entities = activityRepository.findAllByCut_IdAndSubject_Id(cutId, subjectId);
         return entities.stream()
                 .map(ActivityEntityMapper::toDomain)

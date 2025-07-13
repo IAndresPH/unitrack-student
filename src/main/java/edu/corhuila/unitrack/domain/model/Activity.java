@@ -5,7 +5,6 @@ import edu.corhuila.unitrack.infrastructure.persistence.entity.ActivityEntity;
 public class Activity extends Base{
     private String name;
     private Double percentage;
-    private Double grade = 0.0;
     private Cut cut;
     private Subject subject;
 
@@ -23,14 +22,6 @@ public class Activity extends Base{
 
     public void setPercentage(Double percentage) {
         this.percentage = percentage;
-    }
-
-    public Double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Double grade) {
-        this.grade = grade;
     }
 
     public Cut getCut() {
@@ -56,7 +47,6 @@ public class Activity extends Base{
         activity.setId(entity.getId());
         activity.setName(entity.getName());
         activity.setPercentage(entity.getPercentage());
-        activity.setGrade(entity.getGrade());
 
         if (entity.getCut() != null) {
             Cut cut = new Cut();

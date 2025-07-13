@@ -14,7 +14,6 @@ public class ActivityEntityMapper {
         entity.setId(activity.getId());
         entity.setName(activity.getName());
         entity.setPercentage(activity.getPercentage());
-        entity.setGrade(activity.getGrade());
 
         if (activity.getCut() != null) {
             CutEntity cutEntity = new CutEntity();

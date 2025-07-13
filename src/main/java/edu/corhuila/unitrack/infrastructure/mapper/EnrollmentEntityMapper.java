@@ -7,7 +7,6 @@ import edu.corhuila.unitrack.infrastructure.persistence.entity.EnrollmentEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.EnrollmentSubjectEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.SubjectEntity;
-
 import java.util.List;
 
 public class EnrollmentEntityMapper {

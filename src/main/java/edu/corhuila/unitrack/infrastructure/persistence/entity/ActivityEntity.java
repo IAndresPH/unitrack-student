@@ -1,13 +1,17 @@
 package edu.corhuila.unitrack.infrastructure.persistence.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +24,6 @@ public class ActivityEntity extends BaseEntity{
     @Column(name = "percentage", nullable = false)
     private Double percentage;
 
-    @Column(name = "grade")
-    private Double grade = 0.0;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cut_id", nullable = false)
     private CutEntity cut;
@@ -30,4 +31,7 @@ public class ActivityEntity extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", nullable = false)
     private SubjectEntity subject;
+
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentActivityEntity> studentActivities = new ArrayList<>();
 }

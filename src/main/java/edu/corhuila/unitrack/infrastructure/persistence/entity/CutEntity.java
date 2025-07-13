@@ -25,9 +25,6 @@ public class CutEntity extends BaseEntity{
     @Column(name = "percentage", nullable = false)
     private Double percentage;
 
-    @Column(name = "final_grade")
-    private Double finalGrade = 0.0;
-
     @ManyToMany
     @JoinTable(
             name = "cut_subject",

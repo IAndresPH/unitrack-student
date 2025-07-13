@@ -21,9 +21,9 @@ public class SubjectEntity extends BaseEntity{
     @Column(name = "credit", nullable = false)
     private Integer credit;
 
-    @Column(name = "final_grade")
-    private Double finalGrade = 0.0;
-
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnrollmentSubjectEntity> enrollmentSubjects = new ArrayList<>();
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StudentSubjectEntity> studentSubjects = new ArrayList<>();
 }

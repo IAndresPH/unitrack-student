@@ -45,6 +45,8 @@ public class ValidationMessages {
     public static final String CUT_ID_REQUIRED = "El ID del corte es obligatorio.";
     public static final String ACTIVITY_ID_INVALID = "El ID de la actividad no existe.";
     public static final String ACTIVITY_PERCENTAGE_EXCEEDED = "La suma de los porcentajes no puede superar el 100%";
+    public static final String ACTIVITY_GRADE_REQUIRED = "La calificación no puede estar vacia";
+    public static final String ACTIVITY_GRADE_RANGE = "Rango de calificación 0-5";
 
     // Enrollment
     public static final String ENROLLMENT_ID_INVALID = "La matrícula con el ID proporcionado no existe.";
