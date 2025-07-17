@@ -13,6 +13,4 @@ public abstract class PersonEntity extends AuditableEntity{
     private String firstName;
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
-    @Column(name = "email", nullable = false, unique = true, length = 50)
-    private String email;
 }

@@ -12,10 +12,8 @@ public class StudentEntityMapper {
         entity.setId(student.getId());
         entity.setFirstName(student.getFirstName());
         entity.setLastName(student.getLastName());
-        entity.setEmail(student.getEmail());
         entity.setStudentCode(student.getStudentCode());
         entity.setProgram(student.getProgram());
-        entity.setSemester(student.getSemester());
         entity.setAverageGrade(student.getAverageGrade());
         entity.setCreatedAt(student.getCreatedAt());
         entity.setUpdatedAt(student.getUpdatedAt());

@@ -5,7 +5,7 @@ import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
 import java.util.List;
 
 public interface ISubjectService {
-    SubjectResponse create(SubjectRequest request);
+    void create(SubjectRequest request);
     void delete(Long id);
     List<SubjectResponse> getAllByStudentId(Long studentId);
 }

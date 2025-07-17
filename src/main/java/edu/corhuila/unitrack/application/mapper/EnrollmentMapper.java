@@ -1,8 +1,7 @@
 package edu.corhuila.unitrack.application.mapper;
 
 import edu.corhuila.unitrack.application.dto.request.EnrollmentRequest;
-import edu.corhuila.unitrack.application.dto.response.EnrollmentGetResponse;
-import edu.corhuila.unitrack.application.dto.response.EnrollmentPostResponse;
+import edu.corhuila.unitrack.application.dto.response.EnrollmentResponse;
 import edu.corhuila.unitrack.application.dto.response.SubjectMiniResponse;
 import edu.corhuila.unitrack.domain.model.Enrollment;
 import edu.corhuila.unitrack.domain.model.Subject;
@@ -41,7 +40,7 @@ public class EnrollmentMapper {
     }
 
     // Para respuesta GET (enriquecida con detalles de materias)
-    public EnrollmentGetResponse toGetResponseDto(Enrollment enrollment) {
+    public EnrollmentResponse toGetResponseDto(Enrollment enrollment) {
         if (enrollment == null) return null;
 
         List<SubjectMiniResponse> subjects = enrollment.getSubjects() != null
@@ -53,28 +52,10 @@ public class EnrollmentMapper {
                 .toList()
                 : List.of();
 
-        return new EnrollmentGetResponse(
+        return new EnrollmentResponse(
                 enrollment.getId(),
                 enrollment.getStudent() != null ? enrollment.getStudent().getId() : null,
                 subjects,
-                enrollment.getSemester()
-        );
-    }
-
-    // Para respuesta POST (solo IDs de materias)
-    public EnrollmentPostResponse toPostResponseDto(Enrollment enrollment) {
-        if (enrollment == null) return null;
-
-        List<Long> subjectIds = enrollment.getSubjects() != null
-                ? enrollment.getSubjects().stream()
-                .map(Subject::getId)
-                .toList()
-                : List.of();
-
-        return new EnrollmentPostResponse(
-                enrollment.getId(),
-                enrollment.getStudent() != null ? enrollment.getStudent().getId() : null,
-                subjectIds,
                 enrollment.getSemester()
         );
     }

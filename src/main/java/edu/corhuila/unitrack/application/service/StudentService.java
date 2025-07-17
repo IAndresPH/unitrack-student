@@ -34,7 +34,7 @@ public class StudentService implements IStudentService {
 
     @Override
     @Transactional
-    public StudentResponse create(StudentRequest request) {
+    public void create(StudentRequest request) {
         if (studentPersistencePort.existsByEmail(request.email())) {
             throw new RuntimeException(STUDENT_EMAIL_INVALID);
         }
@@ -47,8 +47,7 @@ public class StudentService implements IStudentService {
         student.setCreatedAt(LocalDateTime.now());
         student.setActive(true);
 
-        Student saved = studentPersistencePort.save(student);
-        return studentMapper.toResponseDto(saved);
+        studentPersistencePort.save(student);
     }
 
     @Override

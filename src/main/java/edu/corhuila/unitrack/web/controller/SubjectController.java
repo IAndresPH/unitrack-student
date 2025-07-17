@@ -27,9 +27,9 @@ public class SubjectController {
     }
 
     @PostMapping
-    public ResponseEntity<SubjectResponse> create(@Valid @RequestBody SubjectRequest request) {
-        SubjectResponse response = subjectService.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<Void> create(@Valid @RequestBody SubjectRequest request) {
+        subjectService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")

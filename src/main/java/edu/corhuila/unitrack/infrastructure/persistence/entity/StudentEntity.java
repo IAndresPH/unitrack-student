@@ -21,9 +21,6 @@ public class StudentEntity extends PersonEntity{
     @Column(name = "program", nullable = false, length = 30)
     private String program;
 
-    @Column(name = "semester", nullable = false)
-    private Integer semester;
-
     @Column(name = "average_grade")
     private Double averageGrade = 0.0;
 

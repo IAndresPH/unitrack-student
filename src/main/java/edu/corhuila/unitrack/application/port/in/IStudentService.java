@@ -7,6 +7,6 @@ import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 
 public interface IStudentService {
     StudentResponse getById(Long id);
-    StudentResponse create(StudentRequest request);
+    void create(StudentRequest request);
     StudentUpdateResponse update(Long id, StudentUpdateRequest request);
 }

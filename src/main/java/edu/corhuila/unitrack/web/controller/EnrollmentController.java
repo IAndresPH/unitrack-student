@@ -1,9 +1,10 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.EnrollmentRequest;
-import edu.corhuila.unitrack.application.dto.response.EnrollmentGetResponse;
-import edu.corhuila.unitrack.application.dto.response.EnrollmentPostResponse;
+import edu.corhuila.unitrack.application.dto.response.EnrollmentResponse;
 import edu.corhuila.unitrack.application.service.EnrollmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,13 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public EnrollmentPostResponse create(@RequestBody EnrollmentRequest request) {
-        return enrollmentService.create(request);
+    public ResponseEntity<Void> create(@RequestBody EnrollmentRequest request) {
+        enrollmentService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/student/{studentId}")
-    public List<EnrollmentGetResponse> getAllByStudentId(@PathVariable Long studentId) {
+    public List<EnrollmentResponse> getAllByStudentId(@PathVariable Long studentId) {
         return enrollmentService.getAllByStudentId(studentId);
     }
 

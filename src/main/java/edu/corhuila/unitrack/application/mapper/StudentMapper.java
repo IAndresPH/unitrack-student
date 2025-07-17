@@ -15,10 +15,8 @@ public class StudentMapper {
         Student student = new Student();
         student.setFirstName(request.firstName());
         student.setLastName(request.lastName());
-        student.setEmail(request.email());
         student.setStudentCode(request.studentCode());
         student.setProgram(request.program());
-        student.setSemester(request.semester());
 
         return student;
     }
@@ -32,8 +30,6 @@ public class StudentMapper {
                 student.getLastName(),
                 student.getEmail(),
                 student.getStudentCode(),
-                student.getProgram(),
-                student.getSemester(),
                 student.getAverageGrade()
         );
     }
@@ -45,8 +41,7 @@ public class StudentMapper {
                 student.getId(),
                 student.getFirstName(),
                 student.getLastName(),
-                student.getProgram(),
-                student.getSemester()
+                student.getProgram()
         );
     }
 
@@ -55,7 +50,6 @@ public class StudentMapper {
             student.setFirstName(request.firstName());
             student.setLastName(request.lastName());
             student.setProgram(request.program());
-            student.setSemester(request.semester());
         }
     }
 }

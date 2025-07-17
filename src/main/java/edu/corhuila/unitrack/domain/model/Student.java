@@ -6,7 +6,6 @@ import java.util.List;
 public class Student extends Person {
     private String studentCode;
     private String program;
-    private Integer semester;
     private Double averageGrade = 0.0;
     private List<Enrollment> enrollments;
     private List<StudentSubject> studentSubjects;
@@ -26,14 +25,6 @@ public class Student extends Person {
 
     public void setProgram(String program) {
         this.program = program;
-    }
-
-    public Integer getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Integer semester) {
-        this.semester = semester;
     }
 
     public Double getAverageGrade() {
@@ -75,10 +66,8 @@ public class Student extends Person {
         student.setId(entity.getId());
         student.setFirstName(entity.getFirstName());
         student.setLastName(entity.getLastName());
-        student.setEmail(entity.getEmail());
         student.setStudentCode(entity.getStudentCode());
         student.setProgram(entity.getProgram());
-        student.setSemester(entity.getSemester());
         student.setAverageGrade(entity.getAverageGrade());
         student.setCreatedAt(entity.getCreatedAt());
         student.setUpdatedAt(entity.getUpdatedAt());

@@ -4,6 +4,5 @@ public record StudentUpdateResponse(
     Long id,
     String firstName,
     String lastName,
-    String program,
-    Integer semester
+    String program
 ) {}

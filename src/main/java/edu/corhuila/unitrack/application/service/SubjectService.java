@@ -32,10 +32,9 @@ public class SubjectService implements ISubjectService {
 
     @Override
     @Transactional
-    public SubjectResponse create(SubjectRequest request) {
+    public void create(SubjectRequest request) {
         Subject subject = subjectMapper.toEntity(request);
-        Subject saved = subjectPersistencePort.save(subject);
-        return subjectMapper.toResponseDto(saved);
+        subjectPersistencePort.save(subject);
     }
 
     @Override

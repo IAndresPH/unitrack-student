@@ -44,8 +44,7 @@ public class StudentSubjectMapper {
         return new SubjectResponse(
                 subject.getId(),
                 subject.getName(),
-                subject.getCredit(),
-                ss.getFinalGrade() // Este es el valor que vive en StudentSubject
+                subject.getCredit()
         );
     }
 }
