@@ -5,6 +5,5 @@ public record StudentResponse(
     String firstName,
     String lastName,
     String studentCode,
-    String program,
     Double averageGrade
 ) {}

@@ -11,7 +11,6 @@ import edu.corhuila.unitrack.domain.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.STUDENT_EMAIL_INVALID;
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.STUDENT_CODE_INVALID;
 
 @Service
@@ -35,10 +34,6 @@ public class StudentService implements IStudentService {
     @Override
     @Transactional
     public void create(StudentRequest request) {
-        if (studentPersistencePort.existsByEmail(request.email())) {
-            throw new RuntimeException(STUDENT_EMAIL_INVALID);
-        }
-
         if (studentPersistencePort.existsByStudentCode(request.studentCode())) {
             throw new RuntimeException(STUDENT_CODE_INVALID);
         }

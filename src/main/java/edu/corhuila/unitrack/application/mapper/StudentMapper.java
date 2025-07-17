@@ -28,7 +28,6 @@ public class StudentMapper {
                 student.getId(),
                 student.getFirstName(),
                 student.getLastName(),
-                student.getEmail(),
                 student.getStudentCode(),
                 student.getAverageGrade()
         );

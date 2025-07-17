@@ -29,11 +29,6 @@ public class StudentPersistenceAdapter implements IStudentPersistencePort {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return studentRepository.existsByEmail(email);
-    }
-
-    @Override
     public boolean existsByStudentCode(String code) {
         return studentRepository.existsByStudentCode(code);
     }
