@@ -1,11 +1,12 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.AuthRequest;
-import edu.corhuila.unitrack.application.dto.request.RefreshRequest;
 import edu.corhuila.unitrack.application.dto.request.RegisterRequest;
-import edu.corhuila.unitrack.application.dto.response.AuthResponse;
 import edu.corhuila.unitrack.application.port.in.IUserService;
+import edu.corhuila.unitrack.infrastructure.cookie.CookieUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final IUserService userService;
+    private final CookieUtil cookieUtil;
 
-    public AuthController(IUserService userService) {
+    public AuthController(IUserService userService, CookieUtil cookieUtil) {
         this.userService = userService;
+        this.cookieUtil = cookieUtil;
     }
 
     @PostMapping("/register")
@@ -28,14 +31,23 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        AuthResponse response = userService.login(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Void> login(@RequestBody AuthRequest request, HttpServletResponse response) {
+        String token = userService.login(request);
+        cookieUtil.attachTokenCookie(response, token);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshRequest request) {
-        AuthResponse response = userService.refreshToken(request.refreshToken());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Void> refreshTokenFromCookie(
+            @CookieValue(name = CookieUtil.COOKIE_NAME, required = false) String oldToken,
+            HttpServletResponse response) {
+
+        if (oldToken == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String newToken = userService.refreshTokenFromCookie(oldToken);
+        cookieUtil.attachTokenCookie(response, newToken);
+        return ResponseEntity.ok().build();
     }
 }

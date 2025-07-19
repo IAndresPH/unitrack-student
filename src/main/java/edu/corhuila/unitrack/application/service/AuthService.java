@@ -48,7 +48,7 @@ public class AuthService implements IUserService {
     }
 
     @Override
-    public AuthResponse login(AuthRequest request) {
+    public String login(AuthRequest request) {
         User user = userPersistencePort.findByUsernameOrEmail(request.usernameOrEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
 
@@ -71,12 +71,12 @@ public class AuthService implements IUserService {
         newToken.setUser(user);
         tokenPersistencePort.save(newToken);
 
-        return new AuthResponse(token);
+        return token;
     }
 
 
     @Override
-    public AuthResponse refreshToken(String oldToken) {
+    public String refreshTokenFromCookie(String oldToken) {
         Token storedToken = tokenPersistencePort.findByToken(oldToken)
                 .orElseThrow(() -> new RuntimeException("Token no registrado"));
 
@@ -101,7 +101,6 @@ public class AuthService implements IUserService {
         token.setUser(user);
         tokenPersistencePort.save(token);
 
-        return new AuthResponse(newToken);
+        return newToken;
     }
-
 }
