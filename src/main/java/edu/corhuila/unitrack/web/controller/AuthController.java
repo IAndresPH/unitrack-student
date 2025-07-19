@@ -1,15 +1,18 @@
 package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.AuthRequest;
+import edu.corhuila.unitrack.application.dto.request.RefreshRequest;
 import edu.corhuila.unitrack.application.dto.request.RegisterRequest;
 import edu.corhuila.unitrack.application.dto.response.AuthResponse;
-import edu.corhuila.unitrack.application.dto.response.UserResponse;
 import edu.corhuila.unitrack.application.port.in.IUserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final IUserService userService;
@@ -19,9 +22,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        AuthResponse response = userService.register(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+        userService.register(request);
+        return ResponseEntity.status(201).build();
     }
 
     @PostMapping("/login")
@@ -30,9 +33,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser() {
-        UserResponse user = userService.getCurrentUser();
-        return ResponseEntity.ok(user);
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(@RequestBody RefreshRequest request) {
+        AuthResponse response = userService.refreshToken(request.refreshToken());
+        return ResponseEntity.ok(response);
     }
 }

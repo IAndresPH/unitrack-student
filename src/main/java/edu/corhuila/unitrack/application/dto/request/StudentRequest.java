@@ -2,7 +2,6 @@ package edu.corhuila.unitrack.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.*;
 
 public record StudentRequest(

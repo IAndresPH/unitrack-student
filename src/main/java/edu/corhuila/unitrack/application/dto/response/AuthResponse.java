@@ -1,6 +1,5 @@
 package edu.corhuila.unitrack.application.dto.response;
 
 public record AuthResponse(
-    String token,
-    UserResponse user
+    String token
 ) {}

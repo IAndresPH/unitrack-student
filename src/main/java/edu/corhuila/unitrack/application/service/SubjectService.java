@@ -3,7 +3,6 @@ package edu.corhuila.unitrack.application.service;
 import edu.corhuila.unitrack.application.dto.request.SubjectRequest;
 import edu.corhuila.unitrack.application.dto.response.SubjectResponse;
 import edu.corhuila.unitrack.application.mapper.SubjectMapper;
-import edu.corhuila.unitrack.application.port.in.IActivityService;
 import edu.corhuila.unitrack.application.port.in.ISubjectService;
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
 import edu.corhuila.unitrack.application.port.out.ISubjectPersistencePort;
@@ -17,17 +16,14 @@ public class SubjectService implements ISubjectService {
 
     private final ISubjectPersistencePort subjectPersistencePort;
     private final SubjectMapper subjectMapper;
-    private final IActivityService activityService;
 
     public SubjectService(
             ISubjectPersistencePort subjectPersistencePort,
             SubjectMapper subjectMapper,
-            IStudentPersistencePort studentPersistencePort,
-            IActivityService activityService
+            IStudentPersistencePort studentPersistencePort
     ) {
         this.subjectPersistencePort = subjectPersistencePort;
         this.subjectMapper = subjectMapper;
-        this.activityService = activityService;
     }
 
     @Override

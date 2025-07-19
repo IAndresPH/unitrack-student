@@ -5,6 +5,7 @@ import edu.corhuila.unitrack.application.dto.request.StudentUpdateRequest;
 import edu.corhuila.unitrack.application.dto.response.StudentResponse;
 import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 import edu.corhuila.unitrack.application.service.StudentService;
+import edu.corhuila.unitrack.infrastructure.security.AuthenticatedUserProvider;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/students")
 @CrossOrigin(origins = "*")
 public class StudentController {
-    private final StudentService studentService;
 
-    public StudentController(StudentService studentService) {
+    private final StudentService studentService;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
+
+    public StudentController(StudentService studentService, AuthenticatedUserProvider authenticatedUserProvider) {
         this.studentService = studentService;
+        this.authenticatedUserProvider = authenticatedUserProvider;
     }
 
     @PostMapping
@@ -33,10 +37,15 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentResponse> getById(@PathVariable Long id) {
-        StudentResponse response = studentService.getById(id);
-        return ResponseEntity.ok(response);
+    @GetMapping("/me")
+    public ResponseEntity<StudentResponse> getMyStudentInfo() {
+        try {
+            Long studentId = authenticatedUserProvider.getAuthenticatedStudentId();
+            StudentResponse response = studentService.getById(studentId);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

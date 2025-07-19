@@ -15,7 +15,14 @@ public class SubjectEntityMapper {
         return entity;
     }
 
-    public static Subject toDomain(SubjectEntity entity) {
-        return Subject.fromEntity(entity);
+    public static Subject fromEntity(SubjectEntity entity) {
+        if (entity == null) return null;
+
+        Subject subject = new Subject();
+        subject.setId(entity.getId());
+        subject.setName(entity.getName());
+        subject.setCredit(entity.getCredit());
+
+        return subject;
     }
 }

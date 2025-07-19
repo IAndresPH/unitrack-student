@@ -11,10 +11,8 @@ import java.util.List;
 @Repository
 public interface ISubjectRepository extends JpaRepository<SubjectEntity, Long> {
     @Query("""
-    SELECT s FROM SubjectEntity s
-    JOIN s.enrollmentSubjects es
-    JOIN es.enrollment e
-    WHERE e.student.id = :studentId
-""")
+    SELECT ss.subject FROM StudentSubjectEntity ss
+    WHERE ss.student.id = :studentId
+    """)
     List<SubjectEntity> findAllByStudentId(@Param("studentId") Long studentId);
 }

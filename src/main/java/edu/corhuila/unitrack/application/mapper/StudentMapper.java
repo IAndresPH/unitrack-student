@@ -29,7 +29,7 @@ public class StudentMapper {
                 student.getFirstName(),
                 student.getLastName(),
                 student.getStudentCode(),
-                student.getAverageGrade()
+                student.getProgram()
         );
     }
 

@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,6 @@ public class StudentEntity extends PersonEntity{
 
     @Column(name = "average_grade")
     private Double averageGrade = 0.0;
-
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EnrollmentEntity> enrollments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StudentActivityEntity> studentActivities = new ArrayList<>();
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentSubjectEntity> studentSubjects = new ArrayList<>();

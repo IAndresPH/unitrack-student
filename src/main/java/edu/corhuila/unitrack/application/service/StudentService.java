@@ -7,7 +7,10 @@ import edu.corhuila.unitrack.application.dto.response.StudentUpdateResponse;
 import edu.corhuila.unitrack.application.mapper.StudentMapper;
 import edu.corhuila.unitrack.application.port.in.IStudentService;
 import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
+import edu.corhuila.unitrack.application.port.out.IUserPersistencePort;
 import edu.corhuila.unitrack.domain.model.Student;
+import edu.corhuila.unitrack.domain.model.User;
+import edu.corhuila.unitrack.infrastructure.security.AuthenticatedUserProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -18,10 +21,14 @@ public class StudentService implements IStudentService {
 
     private final IStudentPersistencePort studentPersistencePort;
     private final StudentMapper studentMapper;
+    private final IUserPersistencePort userPersistencePort;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
 
-    public StudentService(IStudentPersistencePort studentPersistencePort, StudentMapper studentMapper) {
+    public StudentService(IStudentPersistencePort studentPersistencePort, StudentMapper studentMapper, IUserPersistencePort userPersistencePort, AuthenticatedUserProvider authenticatedUserProvider) {
         this.studentPersistencePort = studentPersistencePort;
         this.studentMapper = studentMapper;
+        this.userPersistencePort = userPersistencePort;
+        this.authenticatedUserProvider = authenticatedUserProvider;
     }
 
     @Override
@@ -38,11 +45,20 @@ public class StudentService implements IStudentService {
             throw new RuntimeException(STUDENT_CODE_INVALID);
         }
 
+        // 1. Mapea el Student
         Student student = studentMapper.toEntity(request);
         student.setCreatedAt(LocalDateTime.now());
         student.setActive(true);
 
-        studentPersistencePort.save(student);
+        // 2. Obtener el usuario autenticado directamente del contexto
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
+        // 3. Guarda el estudiante
+        Student savedStudent = studentPersistencePort.save(student);
+
+        // 4. Asocia el estudiante al usuario y guarda
+        user.setStudent(savedStudent);
+        userPersistencePort.save(user); // actualiza relación en BD
     }
 
     @Override
@@ -55,5 +71,9 @@ public class StudentService implements IStudentService {
 
         Student updated = studentPersistencePort.save(student);
         return studentMapper.toUpdateResponseDto(updated);
+    }
+
+    public StudentResponse toResponse(Student student) {
+        return studentMapper.toResponseDto(student);
     }
 }

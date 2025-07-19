@@ -1,4 +1,4 @@
-package edu.corhuila.unitrack.infrastructure.config;
+package edu.corhuila.unitrack.infrastructure.jwt;
 
 import edu.corhuila.unitrack.application.port.out.IJwtProvider;
 import edu.corhuila.unitrack.application.port.out.IUserPersistencePort;
@@ -29,6 +29,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        // Evita validar JWT si es una ruta pública
+        if (path.startsWith("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -38,9 +46,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User user = userPersistencePort.findByUsername(username).orElse(null);
 
-                if (user != null && jwtProvider.isValidToken(token, user)) {
+                if (user != null && jwtProvider.isValidToken(token)) {
                     var auth = new UsernamePasswordAuthenticationToken(
-                            username, null, List.of() // Puedes añadir roles aquí
+                            user,
+                            null,
+                            List.of()
                     );
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
@@ -49,4 +59,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

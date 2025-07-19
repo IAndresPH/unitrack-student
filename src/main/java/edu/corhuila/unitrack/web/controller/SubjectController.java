@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/subjects")
 @CrossOrigin(origins = "*")
 public class SubjectController {
+
     private final SubjectService subjectService;
 
     public SubjectController(SubjectService subjectService) {
