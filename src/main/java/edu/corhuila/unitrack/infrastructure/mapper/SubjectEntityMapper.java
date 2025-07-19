@@ -15,7 +15,7 @@ public class SubjectEntityMapper {
         return entity;
     }
 
-    public static Subject fromEntity(SubjectEntity entity) {
+    public static Subject toDomain(SubjectEntity entity) {
         if (entity == null) return null;
 
         Subject subject = new Subject();
