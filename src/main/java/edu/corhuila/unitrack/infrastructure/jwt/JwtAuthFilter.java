@@ -3,6 +3,8 @@ package edu.corhuila.unitrack.infrastructure.jwt;
 import edu.corhuila.unitrack.application.port.out.IJwtProvider;
 import edu.corhuila.unitrack.application.port.out.IUserPersistencePort;
 import edu.corhuila.unitrack.domain.model.User;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,34 +31,34 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Buscar el token: primero en Authorization, luego en cookie "token"
+        // Buscar token únicamente en cookies
         String token = null;
-        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-        } else {
-            // Buscar token en cookies
-            if (request.getCookies() != null) {
-                for (var cookie : request.getCookies()) {
-                    if ("token".equals(cookie.getName())) {
-                        token = cookie.getValue();
-                        break;
-                    }
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if ("token".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
                 }
             }
         }
 
         if (token != null) {
-            String username = jwtProvider.extractUsername(token);
+            try {
+                String username = jwtProvider.extractUsername(token);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = userPersistencePort.findByUsername(username).orElse(null);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    User user = userPersistencePort.findByUsername(username).orElse(null);
 
-                if (user != null && jwtProvider.isValidToken(token)) {
-                    var auth = new UsernamePasswordAuthenticationToken(user, null, List.of());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    if (user != null && jwtProvider.isValidToken(token)) {
+                        var auth = new UsernamePasswordAuthenticationToken(user, null, List.of());
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
                 }
+            } catch (ExpiredJwtException e) {
+                request.setAttribute("jwt_error", "expired");
+            } catch (JwtException e) {
+                request.setAttribute("jwt_error", "invalid");
             }
         }
 

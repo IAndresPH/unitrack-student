@@ -13,6 +13,18 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+
+        String errorType = (String) request.getAttribute("jwt_error");
+        String message;
+
+        if ("expired".equals(errorType)) {
+            message = "Token expirado";
+        } else if ("invalid".equals(errorType)) {
+            message = "Token inválido";
+        } else {
+            message = "No autorizado o token no encontrado";
+        }
+
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("{\"error\": \"No autorizado o token inválido\"}");

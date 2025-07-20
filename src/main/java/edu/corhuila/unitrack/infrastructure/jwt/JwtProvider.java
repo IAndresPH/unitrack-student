@@ -59,11 +59,7 @@ public class JwtProvider implements IJwtProvider {
 
     @Override
     public boolean isValidToken(String token) {
-        try {
-            Claims claims = getClaims(token);
-            return claims.getExpiration().after(new Date());
-        } catch (JwtException e) {
-            return false;
-        }
+        Claims claims = getClaims(token);
+        return claims.getExpiration().after(new Date());
     }
 }
