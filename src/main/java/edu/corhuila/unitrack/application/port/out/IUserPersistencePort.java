@@ -9,5 +9,4 @@ public interface IUserPersistencePort {
     Optional<User> findByEmail(String email);
     Optional<User> findByUsernameOrEmail(String usernameOrEmail);
     Optional<User> findById(Long id);
-    Optional<User> findByUsernameWithStudentId(String username);
 }

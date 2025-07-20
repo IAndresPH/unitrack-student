@@ -48,10 +48,4 @@ public class UserPersistenceAdapter implements IUserPersistencePort {
         return userRepository.findById(id)
                 .map(userMapper::toDomain);
     }
-
-    @Override
-    public Optional<User> findByUsernameWithStudentId(String username) {
-        return userRepository.findByUsernameWithStudentEntity(username)
-                .map(userMapper::toDomain);
-    }
 }

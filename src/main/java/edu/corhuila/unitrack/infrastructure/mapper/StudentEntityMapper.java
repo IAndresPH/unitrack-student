@@ -1,7 +1,9 @@
 package edu.corhuila.unitrack.infrastructure.mapper;
 
+import edu.corhuila.unitrack.domain.model.User;
 import edu.corhuila.unitrack.infrastructure.persistence.entity.StudentEntity;
 import edu.corhuila.unitrack.domain.model.Student;
+import edu.corhuila.unitrack.infrastructure.persistence.entity.UserEntity;
 
 public class StudentEntityMapper {
 
@@ -21,6 +23,12 @@ public class StudentEntityMapper {
                 ? student.getActive()
                 : (existing != null ? existing.getActive() : Boolean.TRUE));
 
+        if (student.getUser() != null && student.getUser().getId() != null) {
+            UserEntity userEntity = new UserEntity();
+            userEntity.setId(student.getUser().getId());
+            entity.setUserEntity(userEntity);
+        }
+
         return entity;
     }
 
@@ -36,6 +44,13 @@ public class StudentEntityMapper {
         student.setCreatedAt(entity.getCreatedAt());
         student.setUpdatedAt(entity.getUpdatedAt());
         student.setActive(entity.getActive());
+
+        // ✅ Setear solo el ID del usuario, no toda la entidad
+        if (entity.getUserEntity() != null && entity.getUserEntity().getId() != null) {
+            User user = new User();
+            user.setId(entity.getUserEntity().getId());
+            student.setUser(user);
+        }
 
         return student;
     }

@@ -39,7 +39,7 @@ public class StudentController {
     @GetMapping("/me")
     public ResponseEntity<StudentResponse> getMyStudentInfo() {
         try {
-            Long studentId = authenticatedUserProvider.getAuthenticatedStudentId();
+            Long studentId = authenticatedUserProvider.getAuthenticatedUserId();
             StudentResponse response = studentService.getById(studentId);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {

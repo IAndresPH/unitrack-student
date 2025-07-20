@@ -10,10 +10,13 @@ import edu.corhuila.unitrack.application.port.out.IStudentPersistencePort;
 import edu.corhuila.unitrack.application.port.out.IUserPersistencePort;
 import edu.corhuila.unitrack.domain.model.Student;
 import edu.corhuila.unitrack.domain.model.User;
+import edu.corhuila.unitrack.infrastructure.persistence.entity.UserEntity;
 import edu.corhuila.unitrack.infrastructure.security.AuthenticatedUserProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
+
 import static edu.corhuila.unitrack.application.shared.constants.ValidationMessages.STUDENT_CODE_INVALID;
 
 @Service
@@ -45,21 +48,19 @@ public class StudentService implements IStudentService {
             throw new RuntimeException(STUDENT_CODE_INVALID);
         }
 
-        // 1. Mapea el Student
         Student student = studentMapper.toEntity(request);
         student.setCreatedAt(LocalDateTime.now());
         student.setActive(true);
 
-        // 2. Obtener el usuario autenticado directamente del contexto
-        User user = authenticatedUserProvider.getAuthenticatedUser();
+        Long userId = authenticatedUserProvider.getAuthenticatedUserId();
 
-        // 3. Guarda el estudiante
-        Student savedStudent = studentPersistencePort.save(student);
+        User user = new User();
+        user.setId(userId);
+        student.setUser(user);
 
-        // 4. Asocia el estudiante al usuario y guarda
-        user.setStudent(savedStudent);
-        userPersistencePort.save(user); // actualiza relación en BD
+        studentPersistencePort.save(student);
     }
+
 
     @Override
     @Transactional

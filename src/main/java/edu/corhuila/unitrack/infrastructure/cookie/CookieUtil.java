@@ -17,4 +17,13 @@ public class CookieUtil {
 
         response.addCookie(cookie);
     }
+
+    public void attachRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refresh-token", refreshToken);
+        cookie.setHttpOnly(true); // El navegador no puede leerla con JS
+        cookie.setSecure(false);   // Solo por HTTPS (en producción)
+        cookie.setPath("/api/auth/refresh"); // solo se envía a ese endpoint
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7 días por ejemplo
+        response.addCookie(cookie);
+    }
 }

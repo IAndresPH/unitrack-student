@@ -2,6 +2,7 @@ package edu.corhuila.unitrack.web.controller;
 
 import edu.corhuila.unitrack.application.dto.request.AuthRequest;
 import edu.corhuila.unitrack.application.dto.request.RegisterRequest;
+import edu.corhuila.unitrack.application.dto.response.AuthResponse;
 import edu.corhuila.unitrack.application.port.in.IUserService;
 import edu.corhuila.unitrack.infrastructure.cookie.CookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,24 +31,34 @@ public class AuthController {
         return ResponseEntity.status(201).build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody AuthRequest request, HttpServletResponse response) {
-        String token = userService.login(request);
-        cookieUtil.attachTokenCookie(response, token);
+    @PostMapping("/authenticate")
+    public ResponseEntity<Void> authenticate(@RequestBody AuthRequest request, HttpServletResponse response) {
+        AuthResponse authResponse = userService.authenticate(request);
+
+        // Cookie para el access token (cliente puede usarla)
+        cookieUtil.attachTokenCookie(response, authResponse.accessToken());
+
+        // Cookie para el refresh token (solo para backend, HTTP-only y Secure)
+        cookieUtil.attachRefreshTokenCookie(response, authResponse.refreshToken());
+
         return ResponseEntity.ok().build();
     }
 
+
     @PostMapping("/refresh")
     public ResponseEntity<Void> refreshTokenFromCookie(
-            @CookieValue(name = CookieUtil.COOKIE_NAME, required = false) String oldToken,
+            @CookieValue(name = "refresh-token", required = false) String oldRefreshToken,
             HttpServletResponse response) {
 
-        if (oldToken == null) {
+        if (oldRefreshToken == null) {
             return ResponseEntity.status(401).build();
         }
 
-        String newToken = userService.refreshTokenFromCookie(oldToken);
-        cookieUtil.attachTokenCookie(response, newToken);
+        String newAccessToken = userService.refreshTokenFromCookie(oldRefreshToken);
+
+        // Reemplaza solo el access token
+        cookieUtil.attachTokenCookie(response, newAccessToken);
+
         return ResponseEntity.ok().build();
     }
 }

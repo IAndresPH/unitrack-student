@@ -3,9 +3,7 @@ package edu.corhuila.unitrack.infrastructure.persistence.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,10 +22,6 @@ public class UserEntity extends BaseEntity{
 
     @Column(nullable = false)
     private String password;
-
-    @OneToOne(optional = true)
-    @JoinColumn(name = "student_id")
-    private StudentEntity studentEntity;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private List<TokenEntity> tokens;

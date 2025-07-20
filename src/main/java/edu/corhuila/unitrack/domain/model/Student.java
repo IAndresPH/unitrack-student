@@ -6,6 +6,7 @@ public class Student extends Person {
     private String studentCode;
     private String program;
     private List<StudentSubject> studentSubjects;
+    private User user;
 
     public String getStudentCode() {
         return studentCode;
@@ -29,5 +30,13 @@ public class Student extends Person {
 
     public void setStudentSubjects(List<StudentSubject> studentSubjects) {
         this.studentSubjects = studentSubjects;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

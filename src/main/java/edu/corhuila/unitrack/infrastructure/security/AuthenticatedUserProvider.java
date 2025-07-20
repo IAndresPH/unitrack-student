@@ -18,13 +18,7 @@ public class AuthenticatedUserProvider {
         return (User) authentication.getPrincipal();
     }
 
-    public Long getAuthenticatedStudentId() {
-        User user = getAuthenticatedUser();
-
-        if (user.getStudent() == null) {
-            throw new RuntimeException("El usuario no tiene asociado un estudiante.");
-        }
-
-        return user.getStudent().getId();
+    public Long getAuthenticatedUserId() {
+        return getAuthenticatedUser().getId();
     }
 }

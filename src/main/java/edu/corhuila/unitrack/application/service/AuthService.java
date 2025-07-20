@@ -11,6 +11,7 @@ import edu.corhuila.unitrack.application.port.out.IUserPersistencePort;
 import edu.corhuila.unitrack.domain.model.Token;
 import edu.corhuila.unitrack.domain.model.TokenType;
 import edu.corhuila.unitrack.domain.model.User;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class AuthService implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final ITokenPersistencePort tokenPersistencePort;
 
-    public AuthService(UserMapper userMapper, IUserPersistencePort userPersistencePort, IJwtProvider jwtProvider, PasswordEncoder passwordEncoder, ITokenPersistencePort tokenPersistencePort) {
+    public AuthService(UserMapper userMapper, IUserPersistencePort userPersistencePort, IJwtProvider jwtProvider, PasswordEncoder passwordEncoder, ITokenPersistencePort tokenPersistencePort, AuthenticationManager authenticationManager) {
         this.userMapper = userMapper;
         this.userPersistencePort = userPersistencePort;
         this.jwtProvider = jwtProvider;
@@ -48,59 +49,69 @@ public class AuthService implements IUserService {
     }
 
     @Override
-    public String login(AuthRequest request) {
+    public AuthResponse authenticate(AuthRequest request) {
         User user = userPersistencePort.findByUsernameOrEmail(request.usernameOrEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Contraseña incorrecta.");
+            throw new RuntimeException("Contraseña incorrecta");
         }
 
-        // Generar token
-        String token = jwtProvider.generateToken(user);
-
-        // Revocar tokens válidos anteriores
+        // Revocar tokens antiguos
         tokenPersistencePort.revokeAllValidTokensByUserId(user.getId());
 
-        // Guardar nuevo token
-        Token newToken = new Token();
-        newToken.setToken(token);
-        newToken.setTokenType(TokenType.BEARER);
-        newToken.setRevoked(false);
-        newToken.setExpired(false);
-        newToken.setUser(user);
-        tokenPersistencePort.save(newToken);
+        // Generar nuevos tokens
+        String accessToken = jwtProvider.generateToken(user);
+        String refreshToken = jwtProvider.generateRefreshToken(user);
 
-        return token;
+        // Guardar tokens
+        saveToken(user, accessToken, TokenType.BEARER);
+        saveToken(user, refreshToken, TokenType.REFRESH);
+
+        return new AuthResponse(accessToken, refreshToken);
     }
-
 
     @Override
     public String refreshTokenFromCookie(String oldToken) {
+        // 1. Verifica que el token exista
         Token storedToken = tokenPersistencePort.findByToken(oldToken)
                 .orElseThrow(() -> new RuntimeException("Token no registrado"));
 
-        if (storedToken.isRevoked() || storedToken.isExpired()) {
-            throw new RuntimeException("Token inválido o ya revocado");
+        // 2. Verifica que el token sea de tipo REFRESH
+        if (storedToken.getTokenType() != TokenType.REFRESH) {
+            throw new RuntimeException("Token no es de tipo REFRESH");
         }
 
+        // 3. Verifica que el token NO esté revocado
+        if (storedToken.isRevoked()) {
+            throw new RuntimeException("Token revocado");
+        }
+
+        // 4. Extrae al usuario del token
         String username = jwtProvider.extractUsername(oldToken);
         User user = userPersistencePort.findByUsernameOrEmail(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Revocar todos los tokens válidos anteriores
+        // 5. Revoca los access tokens válidos existentes (NO revocar el refresh)
         tokenPersistencePort.revokeAllValidTokensByUserId(user.getId());
 
-        // Crear nuevo token
-        String newToken = jwtProvider.generateToken(user);
+        // 6. Genera un nuevo access token
+        String newAccessToken = jwtProvider.generateToken(user);
+
+        // 7. Guarda el nuevo access token en la base de datos
+        saveToken(user, newAccessToken, TokenType.BEARER);
+
+        // 8. Devuelve el nuevo access token
+        return newAccessToken;
+    }
+
+    private void saveToken(User user, String tokenStr, TokenType tokenType) {
         Token token = new Token();
-        token.setToken(newToken);
-        token.setTokenType(TokenType.BEARER);
+        token.setToken(tokenStr);
+        token.setTokenType(tokenType);
         token.setRevoked(false);
         token.setExpired(false);
         token.setUser(user);
         tokenPersistencePort.save(token);
-
-        return newToken;
     }
 }
